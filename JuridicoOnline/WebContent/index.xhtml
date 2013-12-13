@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html 
+	xmlns="http://www.w3.org/1999/xhtml"  
+    xmlns:h="http://java.sun.com/jsf/html"  
+    xmlns:f="http://java.sun.com/jsf/core"  
+    xmlns:p="http://primefaces.org/ui"
+>  
+<h:head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
+<title>Jurídico Online</title>
+
+<style type="text/css">
+	body{
+		font-size: 10px;
+	}
+</style>
+</h:head>
+<h:body>
+
+<h:form id="usuarioForm" > 
+
+   <p:growl id="messages"/>
+	<p:panel header="Identifica&ccedil;&atilde;o" style="width:470px;margin:10% 30% 10% 30%;" >
+		<h:panelGrid columns="3" >
+			<h:outputLabel for="matricula" value="Matricula" />
+			<p:inputText id="matricula" required="true" value="#{usuarioBean.matricula}" label="matricula">
+			</p:inputText>
+				<p:message for="matricula" />
+			
+			<h:outputLabel for="senha" value="Senha" />
+			<p:password id="senha" value="#{usuarioBean.senha}" required="true" label="Senha" feedback="no">
+			</p:password>
+				<p:message for="senha"/>
+			
+			<h:commandButton  value="Entrar"  action="#{usuarioBean.efetuarLogin}" />
+		</h:panelGrid>
+	</p:panel>
+
+</h:form>
+	
+</h:body>
+</html>
