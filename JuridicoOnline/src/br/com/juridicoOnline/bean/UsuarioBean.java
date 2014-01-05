@@ -22,7 +22,8 @@ import br.com.juridicoOnline.dao.UsuarioDAO;
 @SessionScoped
 public class UsuarioBean implements Serializable {
 
-	private static final long serialVersionUID = -2188649148409324369L;
+	
+	private static final long serialVersionUID = -4786663279197427709L;
 	private Usuario usuario;
 	private String matricula;
 	private String nome;
@@ -36,7 +37,7 @@ public class UsuarioBean implements Serializable {
 		usuarioDAO = new UsuarioDAO();
 	}
 	
-	public String salvar() {
+	public String salvarDAO() {
 		UsuarioDAO usuarioDAO = new UsuarioDAO();
 		Usuario salvaUsuario = new Usuario();
 		salvaUsuario.setMatricula(matricula);
@@ -59,7 +60,7 @@ public class UsuarioBean implements Serializable {
 		
 		Usuario result = usuarioDAO.consultar(this.matricula,
 				this.senha);
-		System.out.println("resultado:" + result);
+		System.out.println("resultado:" + result.getMatricula());
 
 		if (result == null) {
 			FacesContext.getCurrentInstance().addMessage(null,
@@ -71,6 +72,7 @@ public class UsuarioBean implements Serializable {
 				.getCurrentInstance().getExternalContext().getSession(false);
 		httpSession.setAttribute("matricula", result.getMatricula());
 		httpSession.setAttribute("nome", result.getNome());
+		httpSession.setAttribute("fknUnidadeBase", result.getfknUnidadeBase());
 		
 		funcao = result.getFuncao();
 		System.out.println("funcao:" + funcao);

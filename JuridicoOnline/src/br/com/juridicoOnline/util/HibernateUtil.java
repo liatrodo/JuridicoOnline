@@ -1,25 +1,40 @@
 package br.com.juridicoOnline.util;
 
+import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
+import org.hibernate.service.ServiceRegistry;
+import org.hibernate.service.ServiceRegistryBuilder;
 
 public class HibernateUtil {
 
-	private static final SessionFactory sessionFactory = buildSessionFactory();
+	private static SessionFactory sessionFactory = null;
+	private static ServiceRegistry serviceRegistry;
 
-	private static SessionFactory buildSessionFactory() {
+	static {
 		try {
-			Configuration cfg = new Configuration();
-			cfg.configure("hibernate.cfg.xml");
-			return cfg.buildSessionFactory();
-		} catch (Throwable e) {
-			System.out.println("Criação inicial falhou. Erro: " + e);
-			throw new ExceptionInInitializerError(e);
+			sessionFactory = getSessionFactory();
+		} catch (Throwable ex) {
+			System.err.println("Initial SessionFactory creation failed." + ex);
+			throw new ExceptionInInitializerError(ex);
 		}
 	}
 
 	public static SessionFactory getSessionFactory() {
+		if (sessionFactory == null) {
+			Configuration configuration = new Configuration();
+			configuration.configure();
+			serviceRegistry = new ServiceRegistryBuilder().applySettings(
+					configuration.getProperties()).buildServiceRegistry();
+			sessionFactory = configuration.buildSessionFactory(serviceRegistry);
+			sessionFactory.openSession();
+			return sessionFactory;
+		}
 		return sessionFactory;
+	}
+
+	public static Session getSession() {
+		return sessionFactory.openSession();
 	}
 
 }

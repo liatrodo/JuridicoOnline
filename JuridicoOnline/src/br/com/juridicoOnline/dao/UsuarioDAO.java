@@ -42,9 +42,6 @@ public class UsuarioDAO {
 			this.session = HibernateUtil.getSessionFactory().getCurrentSession();
 			this.transacao = this.session.beginTransaction();
 
-			//Criteria filtro = this.session.createCriteria(Usuario.class);
-			//filtro.add(Restrictions.eq("matricula", matricula));
-			//retorno = (Usuario) filtro.uniqueResult();
 			retorno = (Usuario) session.createCriteria(Usuario.class)
 					.add(Restrictions.eq("matricula", matricula))
 					.add(Restrictions.eq("senha", senha)).uniqueResult();			

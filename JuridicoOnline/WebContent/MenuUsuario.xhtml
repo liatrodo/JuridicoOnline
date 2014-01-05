@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="ISO-8859-1" ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml"  
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"  
     xmlns:h="http://java.sun.com/jsf/html"  
     xmlns:f="http://java.sun.com/jsf/core"  
-    xmlns:p="http://primefaces.org/ui">  
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:ui="http://java.sun.com/jsf/facelets">  
   
     <h:head>  
   		<title>Jur&iacute;dico Online</title>
@@ -11,24 +12,24 @@
       
     <h:body>  
       
-        <h:form>  
+    <h:form>  
   
-    <p:growl id="messages"/>  
-  
-    <h1>Jur&iacute;dico Online</h1>  
-    <h3>Menu Cliente</h3> 
-    <p:menubar>  
-        
-        <p:menuitem value="Incluir" icon="ui-icon-document" />
-  
-        <p:menuitem value="Consultar" icon="ui-icon-search" />
-  
-        <p:menuitem value="Sair" url="http://www.primefaces.org" icon="ui-icon-close" />  
-  
-     </p:menubar>  
-  
-</h:form>  
+	    <p:growl id="messages"/>  
+	  
+	    <h1>Jur&iacute;dico Online</h1>  
+	    <h3>Menu Cliente</h3> 
+	    <p:menubar>  
+	        
+	        <p:menuitem value="Incluir" icon="ui-icon-document" url="CadastraConsultaJuridica.jsf" />
+	  
+	        <p:menuitem value="Consultar" icon="ui-icon-search" />
+	  
+	        <p:menuitem value="Sair"  url="index.jsf" icon="ui-icon-close" />  
+	  
+	     </p:menubar>  
+	  
+	</h:form>  
           
     </h:body>  
-</html>  
+</ui:composition>  
 
