@@ -1,6 +1,7 @@
 package br.com.juridicoOnline.entity;
 
 import java.io.Serializable;
+import java.util.Date;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
@@ -11,6 +12,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 @Entity
 @Table(name = "consultaJuridica")
@@ -29,9 +32,8 @@ public class ConsultaJuridica implements Serializable{
 	private String fknMatriculaCliente;
 	private String pergunta;
 	private String resposta;
-	private String data;
-	private String horaInicial;
-	private String horaFinal;
+	private Date dataInicial;
+	private Date dataFinal;
 	private String fknMatriculaAdvogado;
 	
 	public ConsultaJuridica() {
@@ -110,29 +112,26 @@ public class ConsultaJuridica implements Serializable{
 		this.resposta = resposta;
 	}
 	
-	@Column(name="data", length = 10)	
-	public String getData() {
-		return data;
+	@Temporal(TemporalType.DATE)
+	@Column(name="dataInicial")	
+	public Date getDataInicial() {
+		return dataInicial;
 	}
-	public void setData(String data) {
-		this.data = data;
-	}
-	
-	@Column(name="horaInicial", length = 8)
-	public String getHoraInicial() {
-		return horaInicial;
-	}
-	public void setHoraInicial(String horaInicial) {
-		this.horaInicial = horaInicial;
+
+
+	public void setDataInicial(Date dataAtual) {
+		this.dataInicial = dataAtual;
 	}
 	
-	@Column(name="horaFinal", length = 8)	
-	public String getHoraFinal() {
-		return horaFinal;
+	@Temporal(TemporalType.DATE)
+	@Column(name="dataFinal")	
+	public Date getDataFinal() {
+		return dataFinal;
 	}
-	public void setHoraFinal(String horaFinal) {
-		this.horaFinal = horaFinal;
-	}
+
+	public void setDataFinal(Date dataFinal) {
+		this.dataFinal = dataFinal;
+	}	
 	
 	@ManyToOne
 	@JoinColumn(name="fknMatriculaAdvogado")	
@@ -146,7 +145,8 @@ public class ConsultaJuridica implements Serializable{
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((data == null) ? 0 : data.hashCode());
+		result = prime * result + ((dataInicial == null) ? 0 : dataInicial.hashCode());
+		result = prime * result + ((dataFinal == null) ? 0 : dataFinal.hashCode());
 		result = prime * result
 				+ ((fknAreaJuridica == null) ? 0 : fknAreaJuridica.hashCode());
 		result = prime * result
@@ -166,10 +166,6 @@ public class ConsultaJuridica implements Serializable{
 				+ ((fknUnidadeJuridica == null) ? 0 : fknUnidadeJuridica
 						.hashCode());
 		result = prime * result
-				+ ((horaFinal == null) ? 0 : horaFinal.hashCode());
-		result = prime * result
-				+ ((horaInicial == null) ? 0 : horaInicial.hashCode());
-		result = prime * result
 				+ ((idConsulta == null) ? 0 : idConsulta.hashCode());
 		result = prime * result
 				+ ((pergunta == null) ? 0 : pergunta.hashCode());
@@ -186,11 +182,16 @@ public class ConsultaJuridica implements Serializable{
 		if (getClass() != obj.getClass())
 			return false;
 		ConsultaJuridica other = (ConsultaJuridica) obj;
-		if (data == null) {
-			if (other.data != null)
+		if (dataInicial == null) {
+			if (other.dataInicial != null)
 				return false;
-		} else if (!data.equals(other.data))
+		} else if (!dataInicial.equals(other.dataInicial))
 			return false;
+		if (dataFinal == null) {
+			if (other.dataFinal != null)
+				return false;
+		} else if (!dataFinal.equals(other.dataFinal))
+			return false;		
 		if (fknAreaJuridica == null) {
 			if (other.fknAreaJuridica != null)
 				return false;
@@ -221,16 +222,6 @@ public class ConsultaJuridica implements Serializable{
 				return false;
 		} else if (!fknUnidadeJuridica.equals(other.fknUnidadeJuridica))
 			return false;
-		if (horaFinal == null) {
-			if (other.horaFinal != null)
-				return false;
-		} else if (!horaFinal.equals(other.horaFinal))
-			return false;
-		if (horaInicial == null) {
-			if (other.horaInicial != null)
-				return false;
-		} else if (!horaInicial.equals(other.horaInicial))
-			return false;
 		if (idConsulta == null) {
 			if (other.idConsulta != null)
 				return false;
@@ -248,6 +239,5 @@ public class ConsultaJuridica implements Serializable{
 			return false;
 		return true;
 	}
-
 
 }

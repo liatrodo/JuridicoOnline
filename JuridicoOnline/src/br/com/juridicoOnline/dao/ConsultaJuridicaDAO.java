@@ -45,7 +45,6 @@ public class ConsultaJuridicaDAO extends HibernateUtil{
 		session.delete(consultaJuridica);
 	}
 	public List<ConsultaJuridica> listar() {
-		System.out.println("estou no consulta juridica DAO");
 		List<ConsultaJuridica> lista = new ArrayList<ConsultaJuridica>();
 		try {
 			session = HibernateUtil.getSessionFactory().getCurrentSession();

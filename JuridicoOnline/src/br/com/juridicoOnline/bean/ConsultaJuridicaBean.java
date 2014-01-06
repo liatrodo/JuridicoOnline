@@ -2,6 +2,7 @@ package br.com.juridicoOnline.bean;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.faces.application.FacesMessage;
@@ -29,9 +30,8 @@ public class ConsultaJuridicaBean implements Serializable {
 	private String fknMatriculaCliente;
 	private String pergunta;
 	private String resposta;
-	private String data;
-	private String horaInicial;
-	private String horaFinal;
+	private Date dataInicial;
+	private Date dataFinal;
 	private String fknMatriculaAdvogado;
 	private ConsultaJuridicaDAO consultaJuridicaDAO;
 	private List<ConsultaJuridica> listarConsultaJuridica;
@@ -44,17 +44,18 @@ public class ConsultaJuridicaBean implements Serializable {
 	}
 
 	public String salvar() {
+		Date dataAtual = new Date();
 		HttpSession httpSession = (HttpSession) FacesContext
 				.getCurrentInstance().getExternalContext().getSession(false);
 		fknMatriculaCliente = (String) httpSession.getAttribute("matricula");
 		fknUnidadeJuridica = (Integer) httpSession.getAttribute("fknUnidadeBase");
-		System.out.println("Estou no salvar" + fknMatriculaCliente);
 		ConsultaJuridica consulta = new ConsultaJuridica();
 		consulta.setFknAreaJuridica(fknAreaJuridica);
 		consulta.setFknMatriculaCliente(fknMatriculaCliente);		
 		consulta.setFknUnidadeJuridica(fknUnidadeJuridica);
 		consulta.setFknAssunto(fknAssunto);
 		consulta.setPergunta(this.pergunta);
+		consulta.setDataInicial(dataAtual);
 		consultaJuridicaDAO.salvar(consulta);
 		return "CadastraConsultaJuridica";
 
@@ -125,30 +126,6 @@ public class ConsultaJuridicaBean implements Serializable {
 		this.resposta = resposta;
 	}
 
-	public String getData() {
-		return data;
-	}
-
-	public void setData(String data) {
-		this.data = data;
-	}
-
-	public String getHoraInicial() {
-		return horaInicial;
-	}
-
-	public void setHoraInicial(String horaInicial) {
-		this.horaInicial = horaInicial;
-	}
-
-	public String getHoraFinal() {
-		return horaFinal;
-	}
-
-	public void setHoraFinal(String horaFinal) {
-		this.horaFinal = horaFinal;
-	}
-
 	public String getFknMatriculaAdvogado() {
 		return fknMatriculaAdvogado;
 	}
@@ -196,5 +173,21 @@ public class ConsultaJuridicaBean implements Serializable {
 
 	public void setIdConsulta(Integer idConsulta) {
 		this.idConsulta = idConsulta;
+	}
+
+	public Date getDataInicial() {
+		return dataInicial;
+	}
+
+	public void setDataInicial(Date dataInicial) {
+		this.dataInicial = dataInicial;
+	}
+
+	public Date getDataFinal() {
+		return dataFinal;
+	}
+
+	public void setDataFinal(Date dataFinal) {
+		this.dataFinal = dataFinal;
 	}
 }
