@@ -35,6 +35,7 @@ public class ConsultaJuridica implements Serializable{
 	private Date dataInicial;
 	private Date dataFinal;
 	private String fknMatriculaAdvogado;
+	private String status;
 	
 	public ConsultaJuridica() {
 	}
@@ -141,6 +142,17 @@ public class ConsultaJuridica implements Serializable{
 	public void setFknMatriculaAdvogado(String fknMatriculaAdvogado) {
 		this.fknMatriculaAdvogado = fknMatriculaAdvogado;
 	}
+	
+	@Column(name="status", length = 30)	
+	public String getStatus() {
+		return status;
+	}
+
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;

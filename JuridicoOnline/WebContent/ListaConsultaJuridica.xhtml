@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+<h:head>
+	<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
+	<title>Jur&iacute;dico Online</title>
+</h:head>
+<h:body>
+    <ui:include src="MenuAdvogadoResponsavel.xhtml" />
+	<h:form>
+	<p:panel header="Distribui&ccedil;&atilde;o de Consultas Jur&iacute;dicas">
+	<h:messages />
+	<h:dataTable value="#{consultaJuridicaBean.listarDistribuicao}" var="consultaJuridica" rules="rows" cellpadding="7">
+		<h:column>
+			<f:facet name="header">&Aacute;rea Jur&iacute;dica</f:facet>
+			#{consultaJuridica.fknAreaJuridica}
+		</h:column>
+		<h:column>
+			<f:facet name="header">Assunto</f:facet>
+			#{consultaJuridica.fknAssunto}
+		</h:column>		
+		<h:column>
+			<f:facet name="header">Cliente</f:facet>
+			#{consultaJuridica.fknMatriculaCliente}
+		</h:column>		
+		<h:column>
+			<f:facet name="header">Pergunta</f:facet>
+			#{consultaJuridica.pergunta}
+		</h:column>		
+		<h:column>
+			<f:facet name="header">Data Solicita&ccedil;&atilde;o</f:facet>
+			#{consultaJuridica.dataInicial}
+		</h:column>
+		<h:column>
+			<f:facet name="header">Distribui&ccedil;&atilde;o</f:facet>
+			<h:commandLink action="#{consultaJuridicaBean.editar}">
+				<h:graphicImage library="imagens" name="distribuir.ico" width="32" height="32" style="border:0"/>
+				<f:setPropertyActionListener target="#{consultaJuridicaBean.consultaJuridicaSelecionada}" value="#{consultaJuridica}" />
+			</h:commandLink>
+		</h:column>	
+		<h:column>
+			<f:facet name="header">Exclus&atilde;o</f:facet>		
+			<h:commandLink action="#{consultaJuridicaBean.excluir}" onclick="if (!confirm('Confirma a exclusão da consulta jurídica?')) return false;">
+				<h:graphicImage value="#{resource['imagens:excluir.ico']}" width="32" height="32" style="border:0"/>
+				<f:setPropertyActionListener target="#{consultaJuridicaBean.consultaJuridicaSelecionada}" value="#{consultaJuridica}" />
+			</h:commandLink>
+		</h:column>			
+	</h:dataTable>
+	</p:panel>
+	</h:form>
+</h:body>
+</html>

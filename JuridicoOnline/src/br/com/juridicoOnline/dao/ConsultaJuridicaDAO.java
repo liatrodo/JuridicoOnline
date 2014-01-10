@@ -6,6 +6,7 @@ import java.util.List;
 import org.hibernate.*;
 import org.hibernate.criterion.Restrictions;
 
+import br.com.juridicoOnline.entity.AreaJuridica;
 import br.com.juridicoOnline.entity.ConsultaJuridica;
 import br.com.juridicoOnline.entity.Usuario;
 import br.com.juridicoOnline.util.HibernateUtil;
@@ -42,7 +43,21 @@ public class ConsultaJuridicaDAO extends HibernateUtil{
 		
 	}
 	public void excluir(ConsultaJuridica consultaJuridica){
-		session.delete(consultaJuridica);
+		try {
+			session = HibernateUtil.getSessionFactory().getCurrentSession();
+			transacao = session.beginTransaction();
+			String status = "EXCLUIDA";
+			consultaJuridica.setStatus(status);
+			session.update(consultaJuridica);
+			transacao.commit();
+		} catch (Exception e) {
+			session.getTransaction().rollback();
+			e.printStackTrace();
+		} finally {
+			if (session.isOpen()) {
+				session.close();		
+			}
+		}
 	}
 	public List<ConsultaJuridica> listar() {
 		List<ConsultaJuridica> lista = new ArrayList<ConsultaJuridica>();
@@ -70,6 +85,24 @@ public class ConsultaJuridicaDAO extends HibernateUtil{
 		consulta.setInteger("idConsulta", idConsulta);
 		return (ConsultaJuridica) consulta.uniqueResult();
 	}
-	
+
+	public List<ConsultaJuridica> lista(String statusDistribuicao) {
+		List<ConsultaJuridica> lista = new ArrayList<ConsultaJuridica>();
+		try {
+			session = HibernateUtil.getSessionFactory().getCurrentSession();
+			transacao = session.beginTransaction();
+			lista = (List<ConsultaJuridica>) session.createCriteria(ConsultaJuridica.class)
+					.add(Restrictions.eq("status", statusDistribuicao)).list();
+			transacao.commit();			
+		} catch (Exception e) {
+			session.getTransaction().rollback();
+			e.printStackTrace();
+		} finally {
+			if (session.isOpen()) {
+				session.close();		
+			}
+		}
+		return lista;
+	}
 	
 }

@@ -33,17 +33,22 @@ public class ConsultaJuridicaBean implements Serializable {
 	private Date dataInicial;
 	private Date dataFinal;
 	private String fknMatriculaAdvogado;
+	private String status;	
 	private ConsultaJuridicaDAO consultaJuridicaDAO;
 	private List<ConsultaJuridica> listarConsultaJuridica;
+	private List<ConsultaJuridica> listarDistribuicao;	
 	private ConsultaJuridica[] consultasJuridicasSelecionados;
 	private ConsultaJuridica consultaJuridicaSelecionada;
 
 	public ConsultaJuridicaBean() {
+		String statusDistribuicao = "NOVA";
 		consultaJuridicaDAO = new ConsultaJuridicaDAO();
 		listarConsultaJuridica = consultaJuridicaDAO.listar();
+		listarDistribuicao = consultaJuridicaDAO.lista(statusDistribuicao);
 	}
 
 	public String salvar() {
+		String status = "NOVA";
 		Date dataAtual = new Date();
 		HttpSession httpSession = (HttpSession) FacesContext
 				.getCurrentInstance().getExternalContext().getSession(false);
@@ -56,14 +61,39 @@ public class ConsultaJuridicaBean implements Serializable {
 		consulta.setFknAssunto(fknAssunto);
 		consulta.setPergunta(this.pergunta);
 		consulta.setDataInicial(dataAtual);
+		consulta.setStatus(status);
 		consultaJuridicaDAO.salvar(consulta);
 		return "CadastraConsultaJuridica";
 
 	}
+	
+	public String salvarTelefone() {
+		String status = "ATENDIDA";
+		Date dataAtual = new Date();
+		HttpSession httpSession = (HttpSession) FacesContext
+				.getCurrentInstance().getExternalContext().getSession(false);
+		fknMatriculaAdvogado = (String) httpSession.getAttribute("matricula");
+		fknUnidadeJuridica = (Integer) httpSession.getAttribute("fknUnidadeBase");
+		ConsultaJuridica consulta = new ConsultaJuridica();
+		consulta.setFknAreaJuridica(fknAreaJuridica);
+		consulta.setFknMatriculaCliente(this.fknMatriculaCliente);		
+		consulta.setFknMatriculaAdvogado(fknMatriculaAdvogado);		
+		consulta.setFknUnidadeJuridica(fknUnidadeJuridica);
+		consulta.setFknAssunto(fknAssunto);
+		consulta.setPergunta(this.pergunta);
+		consulta.setResposta(this.resposta);
+		consulta.setDataInicial(dataAtual);
+		consulta.setDataFinal(dataAtual);		
+		consulta.setStatus(status);
+		consultaJuridicaDAO.salvar(consulta);
+		return "RegistraAtendimentoTelefonico";
 
-	public String remover() {
+	}
+
+	public String excluir() {
+		System.out.println("Estou no excluir");		
 		consultaJuridicaDAO.excluir(this.consultaJuridicaSelecionada);
-		return "cadastraConsultaJuridica";
+		return "ListaConsultaJuridica";
 
 	}
 
@@ -189,5 +219,21 @@ public class ConsultaJuridicaBean implements Serializable {
 
 	public void setDataFinal(Date dataFinal) {
 		this.dataFinal = dataFinal;
+	}
+
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
+
+	public List<ConsultaJuridica> getListarDistribuicao() {
+		return listarDistribuicao;
+	}
+
+	public void setListarDistribuicao(List<ConsultaJuridica> listarDistribuicao) {
+		this.listarDistribuicao = listarDistribuicao;
 	}
 }

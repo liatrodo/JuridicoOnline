@@ -1,17 +1,15 @@
 package br.com.juridicoOnline.bean;
 
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.model.SelectItem;
 
-import br.com.juridicoOnline.dao.AreaJuridicaDAO;
 import br.com.juridicoOnline.dao.AssuntoDAO;
-import br.com.juridicoOnline.entity.AreaJuridica;
 import br.com.juridicoOnline.entity.Assunto;
-
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
 
 @ManagedBean(name = "assuntoBean")
 @ViewScoped

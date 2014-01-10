@@ -66,6 +66,14 @@ public class Usuario implements java.io.Serializable {
 		} else {
 			return false;
 		}
+	}
+	public boolean isAdvogado() {
+		if (this.funcao == 12)
+		{
+			return true;
+		} else {
+			return false;
+		}
 	}	
 	
 }

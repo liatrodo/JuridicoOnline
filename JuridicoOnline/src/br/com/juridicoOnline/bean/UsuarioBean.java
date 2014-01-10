@@ -57,6 +57,7 @@ public class UsuarioBean implements Serializable {
 		UsuarioDAO usuarioDAO = new UsuarioDAO();
 		Integer funcao;
 		Integer advogadoResponsavel = 123;
+		Integer advogado = 12;		
 		
 		Usuario result = usuarioDAO.consultar(this.matricula,
 				this.senha);
@@ -79,6 +80,8 @@ public class UsuarioBean implements Serializable {
 		
 		if ( result.isAdvogadoResponsavel()) {
 			return "MenuAdvogadoResponsavel";
+		} else if ( result.isAdvogado()) {
+			return "MenuAdvogado";
 		} else {
 			return "MenuUsuario";
 		}
