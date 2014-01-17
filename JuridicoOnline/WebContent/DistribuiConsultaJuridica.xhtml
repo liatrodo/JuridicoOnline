@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+<h:head>
+	<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
+	<title>Jur&iacute;dico Online</title>
+</h:head>
+
+<h:body>
+    <ui:include src="MenuAdvogadoResponsavel.xhtml" />
+	<h:form id="form">
+
+		<p:panel header="Distribui&ccedil;&atilde;o de Consultas Jur&iacute;dicas">
+
+			<p:messages id="messages" autoUpdate="true" />
+
+			<h:panelGrid columns="2" id="salvarConsultaJuridica">
+				<h:outputLabel value="Area Juridica:" for="fknAreaJuridica" />
+
+				<h:inputText id="areaJuridica" value="#{consultaBean.consulta.fknAreaJuridica.nome}"
+					required="true" />
+				
+				<h:outputLabel value="Assunto:" for="assunto" />
+				<h:inputText id="assunto" value="#{consultaBean.consulta.fknAssunto.descricao}"
+					required="true" />
+
+				<h:outputLabel value="Pergunta:" for="pergunta" />
+				<h:inputTextarea id="pergunta" value="#{consultaBean.consulta.pergunta}"
+					required="true" />
+				<h:outputText />
+				
+			</h:panelGrid>
+
+			<h:commandButton action="#{consultaBean.distribuir}" value="Salvar" />
+			
+			<h:commandButton action="#{consultaBean.voltarListagem}" value="Voltar" />
+		</p:panel>
+		
+
+	</h:form>
+
+</h:body>
+</html>

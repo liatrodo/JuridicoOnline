@@ -7,6 +7,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
+import javax.faces.model.SelectItem;
 import javax.servlet.http.HttpSession;
 
 import java.util.ArrayList;
@@ -14,6 +15,7 @@ import java.util.List;
 
 import org.primefaces.event.RowEditEvent;
 
+import br.com.juridicoOnline.entity.AreaJuridica;
 import br.com.juridicoOnline.entity.Usuario;
 import br.com.juridicoOnline.dao.UsuarioDAO;
 
@@ -31,6 +33,7 @@ public class UsuarioBean implements Serializable {
 	private UsuarioDAO usuarioDAO;
 	private Integer funcao;
 	private Integer fknUnidadeBase;
+	private List<SelectItem> advogados; 
 
 	public UsuarioBean() {
 		usuario = new Usuario();
@@ -143,5 +146,18 @@ public class UsuarioBean implements Serializable {
 		this.fknUnidadeBase = fknUnidadeBase;
 	}
 
+	public List<SelectItem> getAdvogados() {
+		System.out.println("estou no getUsuarios");
+		int funcao = 12;
+		List<Usuario> us = usuarioDAO.listar(funcao);
+		System.out.println("tamanho:" + us.size());
 
+		List<SelectItem> itens = new ArrayList<SelectItem>(us.size());
+
+		for (Usuario u : us) {
+			System.out.println("estou aqui???" + u.getMatricula() + "-" + u.getNome());
+			itens.add(new SelectItem(u.getMatricula(), u.getNome()));
+		}
+		return itens;
+	}
 }

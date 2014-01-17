@@ -11,46 +11,70 @@
 </h:head>
 <h:body>
     <ui:include src="MenuAdvogadoResponsavel.xhtml" />
-	<h:form>
-	<p:panel header="Distribui&ccedil;&atilde;o de Consultas Jur&iacute;dicas">
-	<h:messages />
-	<h:dataTable value="#{consultaJuridicaBean.listarDistribuicao}" var="consultaJuridica" rules="rows" cellpadding="7">
-		<h:column>
-			<f:facet name="header">&Aacute;rea Jur&iacute;dica</f:facet>
-			#{consultaJuridica.fknAreaJuridica}
-		</h:column>
-		<h:column>
-			<f:facet name="header">Assunto</f:facet>
-			#{consultaJuridica.fknAssunto}
-		</h:column>		
-		<h:column>
-			<f:facet name="header">Cliente</f:facet>
-			#{consultaJuridica.fknMatriculaCliente}
-		</h:column>		
-		<h:column>
-			<f:facet name="header">Pergunta</f:facet>
-			#{consultaJuridica.pergunta}
-		</h:column>		
-		<h:column>
-			<f:facet name="header">Data Solicita&ccedil;&atilde;o</f:facet>
-			#{consultaJuridica.dataInicial}
-		</h:column>
-		<h:column>
-			<f:facet name="header">Distribui&ccedil;&atilde;o</f:facet>
-			<h:commandLink action="#{consultaJuridicaBean.editar}">
-				<h:graphicImage library="imagens" name="distribuir.ico" width="32" height="32" style="border:0"/>
-				<f:setPropertyActionListener target="#{consultaJuridicaBean.consultaJuridicaSelecionada}" value="#{consultaJuridica}" />
-			</h:commandLink>
-		</h:column>	
-		<h:column>
-			<f:facet name="header">Exclus&atilde;o</f:facet>		
-			<h:commandLink action="#{consultaJuridicaBean.excluir}" onclick="if (!confirm('Confirma a exclusão da consulta jurídica?')) return false;">
-				<h:graphicImage value="#{resource['imagens:excluir.ico']}" width="32" height="32" style="border:0"/>
-				<f:setPropertyActionListener target="#{consultaJuridicaBean.consultaJuridicaSelecionada}" value="#{consultaJuridica}" />
-			</h:commandLink>
-		</h:column>			
-	</h:dataTable>
-	</p:panel>
+	<h:form id="formPrincipal">
+		<p:panel header="Distribui&ccedil;&atilde;o de Consultas Jur&iacute;dicas">
+			<h:messages />
+			<h:dataTable value="#{consultaBean.lista}" var="lista" id="listaConsultas" rules="rows" cellpadding="7">
+				<h:column>
+					<f:facet name="header">&Aacute;rea Jur&iacute;dica</f:facet>
+					#{lista.fknAreaJuridica.nome}
+				</h:column>
+				<h:column>
+					<f:facet name="header">Assunto</f:facet>
+					#{lista.fknAssunto.descricao}
+				</h:column>		
+				<h:column>
+					<f:facet name="header">Cliente</f:facet>
+					#{lista.fknMatriculaCliente.nome}
+				</h:column>		
+				<h:column>
+					<f:facet name="header">Pergunta</f:facet>
+					#{lista.pergunta}
+				</h:column>		
+				<h:column>
+					<f:facet name="header">Data Solicita&ccedil;&atilde;o</f:facet>
+					#{lista.dataInicial}
+				</h:column>
+				<h:column>
+					<f:facet name="header">Distribui&ccedil;&atilde;o</f:facet>
+					<p:commandLink title="Distribuir" update=":formDistribuir:Distribuir" oncomplete="dialogDistribuir.show()" 
+					immediate="true" ajax="true">
+		                  <p:graphicImage library="imagens" name="distribuir.ico" width="32" height="32" style="border:0"/>
+		                  <f:setPropertyActionListener target="#{consultaBean.consulta}" value="#{lista}" />
+					</p:commandLink>
+				</h:column>	
+				<h:column>
+					<f:facet name="header">Exclus&atilde;o</f:facet>		
+					<p:commandLink title="Excluir" action="#{consultaBean.excluir}" onclick="if (!confirm('Confirma a exclusão do usuário?')) return false;">
+		                  <p:graphicImage library="imagens" name="distribuir.ico" width="32" height="32" style="border:0"/>
+		                  <f:setPropertyActionListener target="#{consultaBean.consulta}" value="#{lista}" />
+					</p:commandLink>
+				</h:column>			
+			</h:dataTable>
+		</p:panel>
 	</h:form>
+	
+	<h:form id="formDistribuir">
+        <p:dialog header="Distribuir" widgetVar="dialogDistribuir" modal="true" id="Distribuir" >
+                <p:panelGrid id="panelDistribuir" columns="2">
+                        <h:outputText value="Area:" />
+                        <h:outputText value="#{consultaBean.consulta.fknAreaJuridica.nome}" />
+                        <h:outputText value="Assunto:" />
+                        <h:outputText value="#{consultaBean.consulta.fknAssunto.descricao}" />
+                        <h:outputText value="Pergunta:" />
+                        <h:inputText value="#{consultaBean.consulta.pergunta}" />
+                        <h:outputText value="Advogado:" />
+                        <h:selectOneMenu id="fknMatriculaAdvogado" value="#{consultaBean.consulta.fknMatriculaAdvogado}"
+					required="true">
+							<f:selectItem itemValue="" itemLabel="Selecione..." />
+							<f:selectItems value="#{usuarioBean.advogados}" />
+						</h:selectOneMenu>
+                </p:panelGrid>
+                <p:commandButton value="Distribuir"
+                        actionListener="#{consultaBean.distribuir}"
+                        update=":formPrincipal:listaConsultas"
+                        oncomplete="dialogDistribuir.hide()" />
+        </p:dialog>
+    </h:form>
 </h:body>
 </html>

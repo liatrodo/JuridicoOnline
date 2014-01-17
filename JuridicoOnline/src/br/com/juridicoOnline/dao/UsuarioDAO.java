@@ -6,6 +6,8 @@ import java.util.List;
 import org.hibernate.*;
 import org.hibernate.criterion.Restrictions;
 
+import br.com.juridicoOnline.entity.AreaJuridica;
+import br.com.juridicoOnline.entity.ConsultaJuridica;
 import br.com.juridicoOnline.entity.Usuario;
 import br.com.juridicoOnline.util.HibernateUtil;
 
@@ -63,19 +65,27 @@ public class UsuarioDAO {
 		return retorno;
 	}
 
-	public static void main(String[] args){
-		UsuarioDAO usuarioDAO = new UsuarioDAO();
-		
-		Integer funcao = 12345;
-		Integer unidade = 7420;
-		Usuario beltrano = new Usuario();
-		beltrano.setMatricula("c031100");
-		beltrano.setNome("silvana");
-		beltrano.setSenha("12345");
-		beltrano.setFuncao(funcao);
-		beltrano.setfknUnidadeBase(unidade);
-		usuarioDAO.incluir(beltrano);
-		
+	@SuppressWarnings("unchecked")
+	public List<Usuario> listar(int funcao) {
+		System.out.println("estou no usuario DAO");	
+		List<Usuario> lista = new ArrayList<Usuario>();
+		try {
+			session = HibernateUtil.getSession();
+			session.beginTransaction();
+			lista = (List<Usuario>) session.createCriteria(Usuario.class)
+					.add(Restrictions.eq("funcao", funcao)).list();
+			session.getTransaction().commit();
+		} catch (Exception e) {
+			System.out.println("nao abriu");
+			session.getTransaction().rollback();
+			e.printStackTrace();
+		} finally {
+			if (session.isOpen()) {
+				System.out.println("abriu");
+				session.close();		
+			}
+		}
+		return lista;
 	}
 
 }

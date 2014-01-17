@@ -21,6 +21,13 @@ public class Usuario implements java.io.Serializable {
 	private Integer funcao;
 	private Integer fknUnidadeBase;
 
+	public Usuario() {
+	}		
+	
+	public Usuario(String matricula) {
+		this.matricula = matricula;
+	}	
+	
 	public String getMatricula() {
 		return this.matricula;
 	}

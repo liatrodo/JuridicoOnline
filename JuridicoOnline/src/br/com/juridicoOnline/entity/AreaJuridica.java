@@ -1,8 +1,22 @@
 package br.com.juridicoOnline.entity;
 
+import java.util.List;
+import java.util.Set;
+
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
-import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
 
 @Entity
 @Table(name = "areaJuridica")
@@ -38,6 +52,5 @@ public class AreaJuridica implements java.io.Serializable {
 	public void setNome(String nome) {
 		this.nome = nome;
 	}
-	
 
 }

@@ -3,15 +3,14 @@ package br.com.juridicoOnline.dao;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.hibernate.*;
+import org.hibernate.Query;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
 import org.hibernate.criterion.Restrictions;
 
-import br.com.juridicoOnline.entity.AreaJuridica;
 import br.com.juridicoOnline.entity.ConsultaJuridica;
 import br.com.juridicoOnline.entity.Usuario;
 import br.com.juridicoOnline.util.HibernateUtil;
-
-import org.hibernate.Session;
 
 
 public class ConsultaJuridicaDAO extends HibernateUtil{
@@ -39,9 +38,23 @@ public class ConsultaJuridicaDAO extends HibernateUtil{
 	public void atualizar(ConsultaJuridica consultaJuridica){
 		session.update(consultaJuridica);
 	}
-	public void alterar(ConsultaJuridica consultaJuridica){
-		
-	}
+	
+	public void alterar(ConsultaJuridica consulta){
+		try{
+			session = HibernateUtil.getSession();
+			session.beginTransaction();
+			String status = "DISTRIBUIDA";
+			consulta.setStatus(status);
+			session.update(consulta);
+			session.getTransaction().commit();
+		} catch (Exception e) {
+			session.getTransaction().rollback();
+			e.printStackTrace();
+		} finally {
+			session.close();
+		}
+	}	
+	
 	public void excluir(ConsultaJuridica consultaJuridica){
 		try {
 			session = HibernateUtil.getSessionFactory().getCurrentSession();
@@ -86,13 +99,13 @@ public class ConsultaJuridicaDAO extends HibernateUtil{
 		return (ConsultaJuridica) consulta.uniqueResult();
 	}
 
-	public List<ConsultaJuridica> lista(String statusDistribuicao) {
-		List<ConsultaJuridica> lista = new ArrayList<ConsultaJuridica>();
+	public List<ConsultaJuridica> listaParcial(String statusDistribuicao) {
+		List<ConsultaJuridica> listaParcial = new ArrayList<ConsultaJuridica>();
 		try {
 			session = HibernateUtil.getSessionFactory().getCurrentSession();
 			transacao = session.beginTransaction();
-			lista = (List<ConsultaJuridica>) session.createCriteria(ConsultaJuridica.class)
-					.add(Restrictions.eq("status", statusDistribuicao)).list();
+			listaParcial = (List<ConsultaJuridica>) session.createCriteria(ConsultaJuridica.class)
+					.add(Restrictions.eq("status", statusDistribuicao)).add(Restrictions.isNull("fknMatriculaAdvogado")).list();
 			transacao.commit();			
 		} catch (Exception e) {
 			session.getTransaction().rollback();
@@ -102,7 +115,7 @@ public class ConsultaJuridicaDAO extends HibernateUtil{
 				session.close();		
 			}
 		}
-		return lista;
+		return listaParcial;
 	}
 	
 }

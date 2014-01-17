@@ -25,16 +25,46 @@ public class ConsultaJuridica implements Serializable{
 	@GeneratedValue
 	@Column(name="idConsulta", unique = true, nullable = false)
 	private Integer idConsulta;
-	private Integer fknUnidadeJuridica;
-	private Integer fknAreaJuridica;
-	private Integer fknAssunto;
-	private Integer fknComplexidade;
-	private String fknMatriculaCliente;
+	
+	@ManyToOne
+	@JoinColumn(name="fknUnidadeJuridica")		
+	private UnidadeJuridica fknUnidadeJuridica;
+	
+	@ManyToOne
+	@JoinColumn(name="fknAreaJuridica")		
+	private AreaJuridica fknAreaJuridica;
+	
+	@ManyToOne
+	@JoinColumn(name="fknAssunto")	
+	private Assunto fknAssunto;
+	
+	@ManyToOne
+	@JoinColumn(name="fknComplexidade")	
+	private Complexidade fknComplexidade;
+	
+	@ManyToOne
+	@JoinColumn(name="fknMatriculaCliente")	
+	private Usuario fknMatriculaCliente;
+	
+	@Column(name="pergunta", length = 200)		
 	private String pergunta;
+	
+	@Column(name="resposta", length = 200)		
 	private String resposta;
+	
+	@Temporal(TemporalType.DATE)
+	@Column(name="dataInicial")	
 	private Date dataInicial;
+	
+	@Temporal(TemporalType.DATE)
+	@Column(name="dataFinal")	
 	private Date dataFinal;
-	private String fknMatriculaAdvogado;
+	
+	@ManyToOne
+	@JoinColumn(name="fknMatriculaAdvogado")		
+	private Usuario fknMatriculaAdvogado;
+	
+	@Column(name="status", length = 30)		
 	private String status;
 	
 	public ConsultaJuridica() {
@@ -52,52 +82,41 @@ public class ConsultaJuridica implements Serializable{
 		this.idConsulta = idConsulta;
 	}
 	
-	@ManyToOne
-	@JoinColumn(name="fknUnidadeJuridica")	
-	public Integer getFknUnidadeJuridica() {
+	public UnidadeJuridica getFknUnidadeJuridica() {
 		return this.fknUnidadeJuridica;
 	}
-	public void setFknUnidadeJuridica(Integer fknUnidadeJuridica) {
+	public void setFknUnidadeJuridica(UnidadeJuridica fknUnidadeJuridica) {
 		this.fknUnidadeJuridica = fknUnidadeJuridica;
 	}
 	
-	@ManyToOne
-	@JoinColumn(name="fknAreaJuridica")	
-	public Integer getFknAreaJuridica() {
+	public AreaJuridica getFknAreaJuridica() {
 		return this.fknAreaJuridica;
 	}
-	public void setFknAreaJuridica(Integer fknAreaJuridica) {
+	public void setFknAreaJuridica(AreaJuridica fknAreaJuridica) {
 		this.fknAreaJuridica = fknAreaJuridica;
 	}
 	
-	@ManyToOne
-	@JoinColumn(name="fknAssunto")
-	public Integer getFknAssunto() {
+	public Assunto getFknAssunto() {
 		return this.fknAssunto;
 	}
-	public void setFknAssunto(Integer fknAssunto) {
+	public void setFknAssunto(Assunto fknAssunto) {
 		this.fknAssunto = fknAssunto;
 	}
 	
-	@ManyToOne
-	@JoinColumn(name="fknComplexidade")
-	public Integer getFknComplexidade() {
+	public Complexidade getFknComplexidade() {
 		return fknComplexidade;
 	}
-	public void setFknComplexidade(Integer fknComplexidade) {
+	public void setFknComplexidade(Complexidade fknComplexidade) {
 		this.fknComplexidade = fknComplexidade;
 	}
 	
-	@ManyToOne
-	@JoinColumn(name="fknMatriculaCliente")
-	public String getFknMatriculaCliente() {
+	public Usuario getFknMatriculaCliente() {
 		return fknMatriculaCliente;
 	}
-	public void setFknMatriculaCliente(String fknMatriculaCliente) {
+	public void setFknMatriculaCliente(Usuario fknMatriculaCliente) {
 		this.fknMatriculaCliente = fknMatriculaCliente;
 	}
 	
-	@Column(name="pergunta", length = 200)	
 	public String getPergunta() {
 		return pergunta;
 	}
@@ -105,7 +124,6 @@ public class ConsultaJuridica implements Serializable{
 		this.pergunta = pergunta;
 	}
 	
-	@Column(name="resposta", length = 200)	
 	public String getResposta() {
 		return resposta;
 	}
@@ -113,19 +131,14 @@ public class ConsultaJuridica implements Serializable{
 		this.resposta = resposta;
 	}
 	
-	@Temporal(TemporalType.DATE)
-	@Column(name="dataInicial")	
 	public Date getDataInicial() {
 		return dataInicial;
 	}
-
 
 	public void setDataInicial(Date dataAtual) {
 		this.dataInicial = dataAtual;
 	}
 	
-	@Temporal(TemporalType.DATE)
-	@Column(name="dataFinal")	
 	public Date getDataFinal() {
 		return dataFinal;
 	}
@@ -134,20 +147,16 @@ public class ConsultaJuridica implements Serializable{
 		this.dataFinal = dataFinal;
 	}	
 	
-	@ManyToOne
-	@JoinColumn(name="fknMatriculaAdvogado")	
-	public String getFknMatriculaAdvogado() {
+	public Usuario getFknMatriculaAdvogado() {
 		return fknMatriculaAdvogado;
 	}
-	public void setFknMatriculaAdvogado(String fknMatriculaAdvogado) {
+	public void setFknMatriculaAdvogado(Usuario fknMatriculaAdvogado) {
 		this.fknMatriculaAdvogado = fknMatriculaAdvogado;
 	}
 	
-	@Column(name="status", length = 30)	
 	public String getStatus() {
 		return status;
 	}
-
 
 	public void setStatus(String status) {
 		this.status = status;

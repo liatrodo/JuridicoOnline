@@ -14,12 +14,14 @@ public class Assunto implements java.io.Serializable {
 	@Column(name="idAssunto", unique = true, nullable = false)
 	
 	private Integer idAssunto;
+	
+	@Column(name="descricao", length = 100)	
 	private String descricao;
 
 	public Assunto() {
 	}
 	
-	public Assunto(int idAssuntoa) {
+	public Assunto(int idAssunto) {
 		this.idAssunto = idAssunto;
 	}	
 	
@@ -30,7 +32,6 @@ public class Assunto implements java.io.Serializable {
 		this.idAssunto = idAssunto;
 	}
 	
-	@Column(name="descricao", length = 100)
 	public String getDescricao() {
 		return this.descricao;
 	}

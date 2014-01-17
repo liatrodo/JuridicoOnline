@@ -1,7 +1,6 @@
 package br.com.juridicoOnline.bean;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -16,7 +15,11 @@ import org.primefaces.event.RowEditEvent;
 
 import br.com.juridicoOnline.dao.ConsultaJuridicaDAO;
 import br.com.juridicoOnline.entity.AreaJuridica;
+import br.com.juridicoOnline.entity.Assunto;
+import br.com.juridicoOnline.entity.Complexidade;
 import br.com.juridicoOnline.entity.ConsultaJuridica;
+import br.com.juridicoOnline.entity.UnidadeJuridica;
+import br.com.juridicoOnline.entity.Usuario;
 
 @ManagedBean(name = "consultaJuridicaBean")
 @ViewScoped
@@ -37,14 +40,15 @@ public class ConsultaJuridicaBean implements Serializable {
 	private ConsultaJuridicaDAO consultaJuridicaDAO;
 	private List<ConsultaJuridica> listarConsultaJuridica;
 	private List<ConsultaJuridica> listarDistribuicao;	
-	private ConsultaJuridica[] consultasJuridicasSelecionados;
+	private ConsultaJuridica[] consultasJuridicas;
+	private ConsultaJuridica consultaJuridica = new ConsultaJuridica();
 	private ConsultaJuridica consultaJuridicaSelecionada;
 
 	public ConsultaJuridicaBean() {
 		String statusDistribuicao = "NOVA";
 		consultaJuridicaDAO = new ConsultaJuridicaDAO();
 		listarConsultaJuridica = consultaJuridicaDAO.listar();
-		listarDistribuicao = consultaJuridicaDAO.lista(statusDistribuicao);
+		listarDistribuicao = consultaJuridicaDAO.listaParcial(statusDistribuicao);
 	}
 
 	public String salvar() {
@@ -55,10 +59,10 @@ public class ConsultaJuridicaBean implements Serializable {
 		fknMatriculaCliente = (String) httpSession.getAttribute("matricula");
 		fknUnidadeJuridica = (Integer) httpSession.getAttribute("fknUnidadeBase");
 		ConsultaJuridica consulta = new ConsultaJuridica();
-		consulta.setFknAreaJuridica(fknAreaJuridica);
-		consulta.setFknMatriculaCliente(fknMatriculaCliente);		
-		consulta.setFknUnidadeJuridica(fknUnidadeJuridica);
-		consulta.setFknAssunto(fknAssunto);
+		consulta.setFknAreaJuridica(new AreaJuridica(fknAreaJuridica));
+		consulta.setFknMatriculaCliente(new Usuario(fknMatriculaCliente));		
+		consulta.setFknUnidadeJuridica(new UnidadeJuridica(fknUnidadeJuridica));
+		consulta.setFknAssunto(new Assunto(fknAssunto));
 		consulta.setPergunta(this.pergunta);
 		consulta.setDataInicial(dataAtual);
 		consulta.setStatus(status);
@@ -75,11 +79,13 @@ public class ConsultaJuridicaBean implements Serializable {
 		fknMatriculaAdvogado = (String) httpSession.getAttribute("matricula");
 		fknUnidadeJuridica = (Integer) httpSession.getAttribute("fknUnidadeBase");
 		ConsultaJuridica consulta = new ConsultaJuridica();
-		consulta.setFknAreaJuridica(fknAreaJuridica);
-		consulta.setFknMatriculaCliente(this.fknMatriculaCliente);		
-		consulta.setFknMatriculaAdvogado(fknMatriculaAdvogado);		
-		consulta.setFknUnidadeJuridica(fknUnidadeJuridica);
-		consulta.setFknAssunto(fknAssunto);
+		
+		consulta.setFknAreaJuridica(new AreaJuridica(fknAreaJuridica));
+		consulta.setFknMatriculaCliente(new Usuario(this.fknMatriculaCliente));		
+		consulta.setFknMatriculaAdvogado(new Usuario(fknMatriculaAdvogado));		
+		consulta.setFknUnidadeJuridica(new UnidadeJuridica(fknUnidadeJuridica));
+		consulta.setFknAssunto(new Assunto(fknAssunto));
+		consulta.setFknComplexidade(new Complexidade(fknComplexidade));
 		consulta.setPergunta(this.pergunta);
 		consulta.setResposta(this.resposta);
 		consulta.setDataInicial(dataAtual);
@@ -90,9 +96,20 @@ public class ConsultaJuridicaBean implements Serializable {
 
 	}
 
+	public String distribuir() {
+		return "/DistribuiConsultaJuridica";
+
+	}
+	
+	public String voltarListagem() {
+		System.out.println("estou no voltar listagem");
+		return "/ListaConsultaJuridica";
+
+	}
+	
 	public String excluir() {
 		System.out.println("Estou no excluir");		
-		consultaJuridicaDAO.excluir(this.consultaJuridicaSelecionada);
+		consultaJuridicaDAO.excluir(this.consultaJuridica);
 		return "ListaConsultaJuridica";
 
 	}
@@ -110,12 +127,12 @@ public class ConsultaJuridicaBean implements Serializable {
 		this.listarConsultaJuridica = listarConsultaJuridica;
 	}
 
-	public ConsultaJuridica getConsultaJuricaSelecionada() {
-		return consultaJuridicaSelecionada;
+	public ConsultaJuridica getConsultaJuridica() {
+		return consultaJuridica;
 	}
 
-	public void setConsultaJuridicaSelecionada(ConsultaJuridica consultaJuridicaSelecionada) {
-		this.consultaJuridicaSelecionada = consultaJuridicaSelecionada;
+	public void setConsultaJuridica(ConsultaJuridica consultaJuridica) {
+		this.consultaJuridica = consultaJuridica;
 	}
 
 	public void rowEditListener(RowEditEvent ree) {
@@ -188,13 +205,13 @@ public class ConsultaJuridicaBean implements Serializable {
 		this.fknMatriculaCliente = fknMatriculaCliente;
 	}
 
-	public ConsultaJuridica[] getConsultasJuridicasSelecionados() {
-		return consultasJuridicasSelecionados;
+	public ConsultaJuridica[] getConsultasJuridicas() {
+		return consultasJuridicas;
 	}
 
-	public void setConsultasJuridicasSelecionados(
-			ConsultaJuridica[] consultasJuridicasSelecionados) {
-		this.consultasJuridicasSelecionados = consultasJuridicasSelecionados;
+	public void setConsultasJuridicas(
+			ConsultaJuridica[] consultasJuridicas) {
+		this.consultasJuridicas = consultasJuridicas;
 	}
 
 	public Integer getIdConsulta() {
@@ -235,5 +252,14 @@ public class ConsultaJuridicaBean implements Serializable {
 
 	public void setListarDistribuicao(List<ConsultaJuridica> listarDistribuicao) {
 		this.listarDistribuicao = listarDistribuicao;
+	}
+
+	public ConsultaJuridica getConsultaJuridicaSelecionada() {
+		return consultaJuridicaSelecionada;
+	}
+
+	public void setConsultaJuridicaSelecionada(
+			ConsultaJuridica consultaJuridicaSelecionada) {
+		this.consultaJuridicaSelecionada = consultaJuridicaSelecionada;
 	}
 }
