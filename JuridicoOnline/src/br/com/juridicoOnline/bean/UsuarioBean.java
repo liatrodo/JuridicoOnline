@@ -33,7 +33,6 @@ public class UsuarioBean implements Serializable {
 	private UsuarioDAO usuarioDAO;
 	private Integer funcao;
 	private Integer fknUnidadeBase;
-	private List<SelectItem> advogados; 
 
 	public UsuarioBean() {
 		usuario = new Usuario();
@@ -147,7 +146,7 @@ public class UsuarioBean implements Serializable {
 	}
 
 	public List<SelectItem> getAdvogados() {
-		System.out.println("estou no getUsuarios");
+		System.out.println("estou no getAdvogados");
 		int funcao = 12;
 		List<Usuario> us = usuarioDAO.listar(funcao);
 		System.out.println("tamanho:" + us.size());

@@ -2,10 +2,13 @@ package br.com.juridicoOnline.bean;
 
 import java.awt.event.ActionEvent;
 import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
+import javax.faces.context.FacesContext;
+import javax.servlet.http.HttpSession;
 
 import br.com.juridicoOnline.dao.ConsultaJuridicaDAO;
 import br.com.juridicoOnline.entity.ConsultaJuridica;
@@ -18,10 +21,17 @@ public class consultaBean implements Serializable {
 	private ConsultaJuridica consulta = new ConsultaJuridica();
 	private ConsultaJuridicaDAO consultaDAO = new ConsultaJuridicaDAO();	
 	private List<ConsultaJuridica> lista;
+	private List<ConsultaJuridica> listaPorAdvogado;
+	private String status;
 	
 	public consultaBean() {
 		String statusDistribuicao = "NOVA";
+		String statusConsultaAdvogado = "DISTRIBUIDA";
+		HttpSession httpSession = (HttpSession) FacesContext
+				.getCurrentInstance().getExternalContext().getSession(false);
+		String advogado = (String) httpSession.getAttribute("matricula");
 		lista = consultaDAO.listaParcial(statusDistribuicao);
+		setListaPorAdvogado(consultaDAO.listaPorAdvogado(advogado,statusConsultaAdvogado));		
 	}
 	
 	public ConsultaJuridica getConsulta() {
@@ -43,18 +53,46 @@ public class consultaBean implements Serializable {
 	
 	public void distribuir(){
 		System.out.println("estou no distribuir");
+		status = "DISTRIBUIDA";
+		consulta.setStatus(status);		
 		new ConsultaJuridicaDAO().alterar(consulta);
-		String status = "NOVA";
+		status = "NOVA";
 		lista = new ConsultaJuridicaDAO().listaParcial(status);
 		consulta = new ConsultaJuridica();
 	}
 	
+	public void atender(){
+		System.out.println("estou no atender");
+		Date dataAtual = new Date();
+		consulta.setDataFinal(dataAtual);	
+		status = "ATENDIDA";
+		consulta.setStatus(status);
+		new ConsultaJuridicaDAO().alterar(consulta);
+		status = "DISTRIBUIDA";
+		HttpSession httpSession = (HttpSession) FacesContext
+				.getCurrentInstance().getExternalContext().getSession(false);
+		String advogado = (String) httpSession.getAttribute("matricula");
+		setListaPorAdvogado(consultaDAO.listaPorAdvogado(advogado,status));	
+		consulta = new ConsultaJuridica();
+	}	
 	
 	public String excluir() {
 		System.out.println("Estou no excluir");		
 		consultaDAO.excluir(this.consulta);
 		return "ListaConsultaJuridica";
 
+	}
+
+	public List<ConsultaJuridica> getListaPorAdvogado() {
+		if (this.listaPorAdvogado == null) {
+			ConsultaJuridicaDAO consultaDAO = new ConsultaJuridicaDAO();
+			this.listaPorAdvogado = consultaDAO.listar();
+		}
+		return listaPorAdvogado;
+	}
+
+	public void setListaPorAdvogado(List<ConsultaJuridica> listaPorAdvogado) {
+		this.listaPorAdvogado = listaPorAdvogado;
 	}
 
 	

@@ -62,11 +62,10 @@
                         <h:outputText value="Assunto:" />
                         <h:outputText value="#{consultaBean.consulta.fknAssunto.descricao}" />
                         <h:outputText value="Pergunta:" />
-                        <h:inputText value="#{consultaBean.consulta.pergunta}" />
+                        <h:outputText value="#{consultaBean.consulta.pergunta}" />
                         <h:outputText value="Advogado:" />
-                        <h:selectOneMenu id="fknMatriculaAdvogado" value="#{consultaBean.consulta.fknMatriculaAdvogado}"
+                        <h:selectOneMenu id="fknMatriculaAdvogado" value="#{consultaBean.consulta.fknMatriculaAdvogado.matricula}"
 					required="true">
-							<f:selectItem itemValue="" itemLabel="Selecione..." />
 							<f:selectItems value="#{usuarioBean.advogados}" />
 						</h:selectOneMenu>
                 </p:panelGrid>

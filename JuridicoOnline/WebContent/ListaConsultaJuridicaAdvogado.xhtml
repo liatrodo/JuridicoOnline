@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+<h:head>
+	<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
+	<title>Jur&iacute;dico Online</title>
+</h:head>
+<h:body>
+    <ui:include src="MenuAdvogado.xhtml" />
+	<h:form id="formPrincipal">
+		<p:panel header="Atendimento de Consultas Jur&iacute;dicas">
+			<h:messages />
+			<h:dataTable value="#{consultaBean.listaPorAdvogado}" var="listaPorAdvogado" id="listaPorAdvogado" rules="rows" cellpadding="7">
+				<h:column>
+					<f:facet name="header">&Aacute;rea Jur&iacute;dica</f:facet>
+					#{listaPorAdvogado.fknAreaJuridica.nome}
+				</h:column>
+				<h:column>
+					<f:facet name="header">Assunto</f:facet>
+					#{listaPorAdvogado.fknAssunto.descricao}
+				</h:column>		
+				<h:column>
+					<f:facet name="header">Cliente</f:facet>
+					#{listaPorAdvogado.fknMatriculaCliente.nome}
+				</h:column>		
+				<h:column>
+					<f:facet name="header">Pergunta</f:facet>
+					#{listaPorAdvogado.pergunta}
+				</h:column>		
+				<h:column>
+					<f:facet name="header">Data Solicita&ccedil;&atilde;o</f:facet>
+					#{listaPorAdvogado.dataInicial}
+				</h:column>
+				<h:column>
+					<f:facet name="header">Atendimento</f:facet>
+					<p:commandLink title="Atender" update=":formAtender:Atender" oncomplete="dialogAtender.show()" 
+					immediate="true" ajax="true">
+		                  <p:graphicImage library="imagens" name="brush.ico" width="32" height="32" style="border:0"/>
+		                  <f:setPropertyActionListener target="#{consultaBean.consulta}" value="#{listaPorAdvogado}" />
+					</p:commandLink>
+				</h:column>	
+			</h:dataTable>
+		</p:panel>
+	</h:form>
+	
+	<h:form id="formAtender">
+        <p:dialog header="Atender" widgetVar="dialogAtender" modal="true" id="Atender" >
+                <p:panelGrid id="panelAtender" columns="2">
+                        <h:outputText value="Area:" />
+                        <h:outputText value="#{consultaBean.consulta.fknAreaJuridica.nome}" />
+                        <h:outputText value="Assunto:" />
+                        <h:outputText value="#{consultaBean.consulta.fknAssunto.descricao}" />
+                        <h:outputText value="Pergunta:" />
+                        <h:outputText value="#{consultaBean.consulta.pergunta}" />
+                        <h:outputText value="Resposta:" />
+                        <h:inputTextarea value="#{consultaBean.consulta.resposta}" required="true"/>
+                </p:panelGrid>
+                <p:commandButton value="Atender"
+                        actionListener="#{consultaBean.atender}"
+                        update=":formPrincipal:listaPorAdvogado"
+                        oncomplete="dialogAtender.hide()" />
+        </p:dialog>
+    </h:form>
+</h:body>
+</html>

@@ -43,8 +43,6 @@ public class ConsultaJuridicaDAO extends HibernateUtil{
 		try{
 			session = HibernateUtil.getSession();
 			session.beginTransaction();
-			String status = "DISTRIBUIDA";
-			consulta.setStatus(status);
 			session.update(consulta);
 			session.getTransaction().commit();
 		} catch (Exception e) {
@@ -116,6 +114,25 @@ public class ConsultaJuridicaDAO extends HibernateUtil{
 			}
 		}
 		return listaParcial;
+	}
+
+	public List<ConsultaJuridica> listaPorAdvogado(String advogado,String status) {
+		List<ConsultaJuridica> listaPorAdvogado = new ArrayList<ConsultaJuridica>();
+		try {
+			session = HibernateUtil.getSessionFactory().getCurrentSession();
+			transacao = session.beginTransaction();
+			listaPorAdvogado = (List<ConsultaJuridica>) session.createCriteria(ConsultaJuridica.class)
+					.add(Restrictions.eq("fknMatriculaAdvogado.matricula", advogado)).add(Restrictions.eq("status", status)).list();
+			transacao.commit();			
+		} catch (Exception e) {
+			session.getTransaction().rollback();
+			e.printStackTrace();
+		} finally {
+			if (session.isOpen()) {
+				session.close();		
+			}
+		}
+		return listaPorAdvogado;
 	}
 	
 }
