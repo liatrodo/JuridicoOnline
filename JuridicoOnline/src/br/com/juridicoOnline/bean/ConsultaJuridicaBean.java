@@ -43,12 +43,13 @@ public class ConsultaJuridicaBean implements Serializable {
 	private ConsultaJuridica[] consultasJuridicas;
 	private ConsultaJuridica consultaJuridica = new ConsultaJuridica();
 	private ConsultaJuridica consultaJuridicaSelecionada;
-
+	private String advogadoBase = "c999999";
+	
 	public ConsultaJuridicaBean() {
 		String statusDistribuicao = "NOVA";
 		consultaJuridicaDAO = new ConsultaJuridicaDAO();
 		listarConsultaJuridica = consultaJuridicaDAO.listar();
-		listarDistribuicao = consultaJuridicaDAO.listaParcial(statusDistribuicao);
+		listarDistribuicao = consultaJuridicaDAO.listaParcial(statusDistribuicao,advogadoBase);
 	}
 
 	public String salvar() {
@@ -58,11 +59,14 @@ public class ConsultaJuridicaBean implements Serializable {
 				.getCurrentInstance().getExternalContext().getSession(false);
 		fknMatriculaCliente = (String) httpSession.getAttribute("matricula");
 		fknUnidadeJuridica = (Integer) httpSession.getAttribute("fknUnidadeBase");
+		Integer complexidade = 1;		
 		ConsultaJuridica consulta = new ConsultaJuridica();
 		consulta.setFknAreaJuridica(new AreaJuridica(fknAreaJuridica));
 		consulta.setFknMatriculaCliente(new Usuario(fknMatriculaCliente));		
 		consulta.setFknUnidadeJuridica(new UnidadeJuridica(fknUnidadeJuridica));
 		consulta.setFknAssunto(new Assunto(fknAssunto));
+		consulta.setFknComplexidade(new Complexidade(complexidade));
+		consulta.setFknMatriculaAdvogado(new Usuario(advogadoBase));
 		consulta.setPergunta(this.pergunta);
 		consulta.setDataInicial(dataAtual);
 		consulta.setStatus(status);

@@ -10,6 +10,7 @@ import javax.faces.model.SelectItem;
 
 import br.com.juridicoOnline.dao.ComplexidadeDAO;
 import br.com.juridicoOnline.entity.Complexidade;
+import br.com.juridicoOnline.entity.Usuario;
 
 @ManagedBean(name = "complexidadeBean")
 @ViewScoped
@@ -51,7 +52,7 @@ public class ComplexidadeBean implements Serializable {
 		List<SelectItem> itens = new ArrayList<SelectItem>(cos.size());
 
 		for (Complexidade co : cos) {
-			System.out.println("estou aqui na Complexidade???");
+			System.out.println("estou aqui na Complexidade???" + co.getIdComplexidade() + "," +  co.getDescricao());
 			itens.add(new SelectItem(co.getIdComplexidade(), co.getDescricao()));
 		}
 		return itens;
@@ -60,4 +61,5 @@ public class ComplexidadeBean implements Serializable {
 	public void setComplexidades(List<SelectItem> complexidades) {
 		complexidades = complexidades;
 	}
+	
 }

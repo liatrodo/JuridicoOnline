@@ -23,6 +23,7 @@ public class consultaBean implements Serializable {
 	private List<ConsultaJuridica> lista;
 	private List<ConsultaJuridica> listaPorAdvogado;
 	private String status;
+	private String advogadoBase = "c999999";
 	
 	public consultaBean() {
 		String statusDistribuicao = "NOVA";
@@ -30,7 +31,7 @@ public class consultaBean implements Serializable {
 		HttpSession httpSession = (HttpSession) FacesContext
 				.getCurrentInstance().getExternalContext().getSession(false);
 		String advogado = (String) httpSession.getAttribute("matricula");
-		lista = consultaDAO.listaParcial(statusDistribuicao);
+		lista = consultaDAO.listaParcial(statusDistribuicao,advogadoBase);
 		setListaPorAdvogado(consultaDAO.listaPorAdvogado(advogado,statusConsultaAdvogado));		
 	}
 	
@@ -57,7 +58,7 @@ public class consultaBean implements Serializable {
 		consulta.setStatus(status);		
 		new ConsultaJuridicaDAO().alterar(consulta);
 		status = "NOVA";
-		lista = new ConsultaJuridicaDAO().listaParcial(status);
+		lista = new ConsultaJuridicaDAO().listaParcial(status,advogadoBase);
 		consulta = new ConsultaJuridica();
 	}
 	

@@ -63,6 +63,11 @@
                         <h:outputText value="#{consultaBean.consulta.fknAssunto.descricao}" />
                         <h:outputText value="Pergunta:" />
                         <h:outputText value="#{consultaBean.consulta.pergunta}" />
+						<h:outputText value="Complexidade:" />
+                        <h:selectOneMenu id="fknComplexidade" value="#{consultaBean.consulta.fknComplexidade.idComplexidade}"
+					required="true">
+							<f:selectItems value="#{complexidadeBean.complexidades}" />
+						</h:selectOneMenu>                        
                         <h:outputText value="Advogado:" />
                         <h:selectOneMenu id="fknMatriculaAdvogado" value="#{consultaBean.consulta.fknMatriculaAdvogado.matricula}"
 					required="true">

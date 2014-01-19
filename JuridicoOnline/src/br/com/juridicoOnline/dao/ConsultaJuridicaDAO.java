@@ -97,13 +97,14 @@ public class ConsultaJuridicaDAO extends HibernateUtil{
 		return (ConsultaJuridica) consulta.uniqueResult();
 	}
 
-	public List<ConsultaJuridica> listaParcial(String statusDistribuicao) {
+	public List<ConsultaJuridica> listaParcial(String statusDistribuicao,String advogadoBase) {
 		List<ConsultaJuridica> listaParcial = new ArrayList<ConsultaJuridica>();
+		System.out.println("advogado base:" + advogadoBase);
 		try {
 			session = HibernateUtil.getSessionFactory().getCurrentSession();
 			transacao = session.beginTransaction();
 			listaParcial = (List<ConsultaJuridica>) session.createCriteria(ConsultaJuridica.class)
-					.add(Restrictions.eq("status", statusDistribuicao)).add(Restrictions.isNull("fknMatriculaAdvogado")).list();
+					.add(Restrictions.eq("status", statusDistribuicao)).add(Restrictions.eq("fknMatriculaAdvogado.matricula",advogadoBase)).list();
 			transacao.commit();			
 		} catch (Exception e) {
 			session.getTransaction().rollback();
