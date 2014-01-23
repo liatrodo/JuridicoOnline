@@ -21,12 +21,15 @@
         
         <p:menuitem value="Distribuir" icon="ui-icon-arrow-4-diag"  url="ListaConsultaJuridica.jsf"/>
   
-        <p:menuitem value="Atender" icon="ui-icon-play" />
+        <p:menuitem value="Atender" icon="ui-icon-play" url="ListaConsultaJuridicaAdvogado.jsf" />
         
         <p:menuitem value="Registrar Atendimento " icon="ui-icon-person" url="RegistraAtendimentoTelefonico.jsf" />
         
-        <p:menuitem value="Relat&oacute;rios" icon="ui-icon-script" />
-  
+        <p:submenu label="Relat&oacute;rios" icon="ui-icon-document">
+        	<p:menuitem value="Por Advogado" icon="ui-icon-script" url="RelatorioPorAdvogado.jsf" />
+        	<p:menuitem value="Por &Aacute;rea Jur&iacute;dica" icon="ui-icon-script" />
+        	<p:menuitem value="Por Per&iacute;odo" icon="ui-icon-script" />
+  		</p:submenu>
         <p:menuitem value="Sair"  url="index.jsf" icon="ui-icon-close" />  
   
      </p:menubar>  

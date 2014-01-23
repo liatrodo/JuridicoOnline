@@ -27,7 +27,9 @@
 		<mapping class="br.com.juridicoOnline.entity.ConsultaJuridica"/>
 		<mapping class="br.com.juridicoOnline.entity.Assunto"/>
 		<mapping class="br.com.juridicoOnline.entity.Complexidade"/>		
-		<mapping class="br.com.juridicoOnline.entity.UnidadeJuridica"/>		
+		<mapping class="br.com.juridicoOnline.entity.UnidadeJuridica"/>
+		<mapping class="br.com.juridicoOnline.entity.PesquisaSatisfacao"/>
+		<mapping class="br.com.juridicoOnline.entity.Nivel"/>		
 	</session-factory>
 </hibernate-configuration>
 

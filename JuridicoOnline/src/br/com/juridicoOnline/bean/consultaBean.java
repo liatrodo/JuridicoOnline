@@ -1,6 +1,5 @@
 package br.com.juridicoOnline.bean;
 
-import java.awt.event.ActionEvent;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
@@ -22,17 +21,24 @@ public class consultaBean implements Serializable {
 	private ConsultaJuridicaDAO consultaDAO = new ConsultaJuridicaDAO();	
 	private List<ConsultaJuridica> lista;
 	private List<ConsultaJuridica> listaPorAdvogado;
+	private List<ConsultaJuridica> listaAdvogado;	
+	private List<ConsultaJuridica> listaPendentePorCliente;
+	private List<ConsultaJuridica> listaAtendidaPorCliente;
 	private String status;
 	private String advogadoBase = "c999999";
+	HttpSession httpSession = (HttpSession) FacesContext
+			.getCurrentInstance().getExternalContext().getSession(false);
+	String usuario = (String) httpSession.getAttribute("matricula");
+	String statusCliente = "ATENDIDA";
+	String statusConsultaAdvogado = "DISTRIBUIDA";
 	
 	public consultaBean() {
 		String statusDistribuicao = "NOVA";
-		String statusConsultaAdvogado = "DISTRIBUIDA";
-		HttpSession httpSession = (HttpSession) FacesContext
-				.getCurrentInstance().getExternalContext().getSession(false);
-		String advogado = (String) httpSession.getAttribute("matricula");
 		lista = consultaDAO.listaParcial(statusDistribuicao,advogadoBase);
-		setListaPorAdvogado(consultaDAO.listaPorAdvogado(advogado,statusConsultaAdvogado));		
+		setListaPorAdvogado(consultaDAO.listaPorAdvogado(usuario,statusConsultaAdvogado));		
+		setListaAdvogado(consultaDAO.listaAdvogado(usuario));		
+		setListaPendentePorCliente(consultaDAO.listaPendentePorCliente(usuario,statusCliente));
+		setListaAtendidaPorCliente(consultaDAO.listaAtendidaPorCliente(usuario,statusCliente));
 	}
 	
 	public ConsultaJuridica getConsulta() {
@@ -70,10 +76,7 @@ public class consultaBean implements Serializable {
 		consulta.setStatus(status);
 		new ConsultaJuridicaDAO().alterar(consulta);
 		status = "DISTRIBUIDA";
-		HttpSession httpSession = (HttpSession) FacesContext
-				.getCurrentInstance().getExternalContext().getSession(false);
-		String advogado = (String) httpSession.getAttribute("matricula");
-		setListaPorAdvogado(consultaDAO.listaPorAdvogado(advogado,status));	
+		setListaPorAdvogado(consultaDAO.listaPorAdvogado(usuario,status));	
 		consulta = new ConsultaJuridica();
 	}	
 	
@@ -96,5 +99,46 @@ public class consultaBean implements Serializable {
 		this.listaPorAdvogado = listaPorAdvogado;
 	}
 
+	public List<ConsultaJuridica> getListaPendentePorCliente() {
+		if (this.listaPendentePorCliente == null) {
+			ConsultaJuridicaDAO consultaDAO = new ConsultaJuridicaDAO();
+			this.listaPendentePorCliente = consultaDAO.listar();
+		}
+		return listaPendentePorCliente;
+	}
+
+	public void setListaPendentePorCliente(List<ConsultaJuridica> listaPendentePorCliente) {
+		this.listaPendentePorCliente = listaPendentePorCliente;
+	}
+
+	public List<ConsultaJuridica> getListaAtendidaPorCliente() {
+		if (this.listaAtendidaPorCliente == null) {
+			ConsultaJuridicaDAO consultaDAO = new ConsultaJuridicaDAO();
+			this.listaAtendidaPorCliente = consultaDAO.listar();
+		}
+		return listaAtendidaPorCliente;
+	}
+
+	public void setListaAtendidaPorCliente(List<ConsultaJuridica> listaAtendidaPorCliente) {
+		this.listaAtendidaPorCliente = listaAtendidaPorCliente;
+	}
+
+	public List<ConsultaJuridica> getListaAdvogado() {
+		if (this.listaAdvogado == null) {
+			ConsultaJuridicaDAO consultaDAO = new ConsultaJuridicaDAO();
+			this.listaAdvogado = consultaDAO.listar();
+		}
+		return listaAdvogado;
+	}
+
+	public void setListaAdvogado(List<ConsultaJuridica> listaAdvogado) {
+		this.listaAdvogado = listaAdvogado;
+	}
+	
+
+	public void updateListaAdvogado(String usuario) {
+		System.out.println("estou no updatelistaadvogado" + usuario);
+		setListaAdvogado(consultaDAO.listaAdvogado(usuario));;
+	}	
 	
 }

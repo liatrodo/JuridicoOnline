@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+<h:head>
+	<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
+	<title>Jur&iacute;dico Online</title>
+</h:head>
+<h:body>
+    <ui:include src="MenuUsuario.xhtml" />
+	<h:form id="formPrincipal">
+		<p:panel header="Atendimento de Consultas Jur&iacute;dicas">
+			<h:messages />
+			<h:dataTable value="#{consultaBean.listaPendentePorCliente}" var="listaPendentePorCliente" id="listaPendentePorCliente" rules="rows" cellpadding="7">
+				<h:column>
+					<f:facet name="header">&Aacute;rea Jur&iacute;dica</f:facet>
+					#{listaPendentePorCliente.fknAreaJuridica.nome}
+				</h:column>
+				<h:column>
+					<f:facet name="header">Assunto</f:facet>
+					#{listaPendentePorCliente.fknAssunto.descricao}
+				</h:column>		
+				<h:column>
+					<f:facet name="header">Cliente</f:facet>
+					#{listaPendentePorCliente.fknMatriculaCliente.nome}
+				</h:column>		
+				<h:column>
+					<f:facet name="header">Pergunta</f:facet>
+					#{listaPendentePorCliente.pergunta}
+				</h:column>		
+				<h:column>
+					<f:facet name="header">Data Solicita&ccedil;&atilde;o</f:facet>
+					#{listaPendentePorCliente.dataInicial}
+				</h:column>
+			</h:dataTable>
+		</p:panel>
+	</h:form>
+</h:body>
+</html>

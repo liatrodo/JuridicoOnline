@@ -22,8 +22,10 @@
 	        
 	        <p:menuitem value="Incluir" icon="ui-icon-document" url="CadastraConsultaJuridica.jsf" />
 	  
-	        <p:menuitem value="Consultar" icon="ui-icon-search" />
-	  
+	        <p:submenu label="Consultar" icon="ui-icon-document"> 
+	        	<p:menuitem value="Pendentes" icon="ui-icon-search" url="ListaConsultaJuridicaPendenteCliente.jsf" />
+	        	<p:menuitem value="Atendidos" icon="ui-icon-check" url="ListaConsultaJuridicaAtendidaCliente.jsf" />
+	  		</p:submenu>
 	        <p:menuitem value="Sair"  url="index.jsf" icon="ui-icon-close" />  
 	  
 	     </p:menubar>  

@@ -135,5 +135,62 @@ public class ConsultaJuridicaDAO extends HibernateUtil{
 		}
 		return listaPorAdvogado;
 	}
+
+	public List<ConsultaJuridica> listaPendentePorCliente(String usuario, String statusCliente) {
+		List<ConsultaJuridica> listaPendentePorCliente = new ArrayList<ConsultaJuridica>();
+		try {
+			session = HibernateUtil.getSessionFactory().getCurrentSession();
+			transacao = session.beginTransaction();
+			listaPendentePorCliente = (List<ConsultaJuridica>) session.createCriteria(ConsultaJuridica.class)
+					.add(Restrictions.eq("fknMatriculaCliente.matricula", usuario)).add(Restrictions.ne("status", statusCliente)).list();
+			transacao.commit();			
+		} catch (Exception e) {
+			session.getTransaction().rollback();
+			e.printStackTrace();
+		} finally {
+			if (session.isOpen()) {
+				session.close();		
+			}
+		}
+		return listaPendentePorCliente;
+	}
+
+	public List<ConsultaJuridica> listaAtendidaPorCliente(String usuario, String statusCliente) {
+		List<ConsultaJuridica> listaAtendidaPorCliente = new ArrayList<ConsultaJuridica>();
+		try {
+			session = HibernateUtil.getSessionFactory().getCurrentSession();
+			transacao = session.beginTransaction();
+			listaAtendidaPorCliente = (List<ConsultaJuridica>) session.createCriteria(ConsultaJuridica.class)
+					.add(Restrictions.eq("fknMatriculaCliente.matricula", usuario)).add(Restrictions.eq("status", statusCliente)).list();
+			transacao.commit();			
+		} catch (Exception e) {
+			session.getTransaction().rollback();
+			e.printStackTrace();
+		} finally {
+			if (session.isOpen()) {
+				session.close();		
+			}
+		}
+		return listaAtendidaPorCliente;
+	}
+
+	public List<ConsultaJuridica> listaAdvogado(String advogado) {
+		List<ConsultaJuridica> listaAdvogado = new ArrayList<ConsultaJuridica>();
+		try {
+			session = HibernateUtil.getSessionFactory().getCurrentSession();
+			transacao = session.beginTransaction();
+			listaAdvogado = (List<ConsultaJuridica>) session.createCriteria(ConsultaJuridica.class)
+					.add(Restrictions.eq("fknMatriculaAdvogado.matricula", advogado)).list();
+			transacao.commit();			
+		} catch (Exception e) {
+			session.getTransaction().rollback();
+			e.printStackTrace();
+		} finally {
+			if (session.isOpen()) {
+				session.close();		
+			}
+		}
+		return listaAdvogado;
+	}
 	
 }

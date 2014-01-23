@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+<h:head>
+	<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
+	<title>Jur&iacute;dico Online</title>
+</h:head>
+
+<body>
+
+	<ui:include src="MenuAdvogadoResponsavel.xhtml" />
+	
+	<f:view>
+		<h:form id="formCombo">
+		
+		<p:panel header="Relat&oacute;rio de acompanhamento das Consultas Jur&iacute;dicas - Por Advogado">
+
+		<p:messages id="messages" autoUpdate="true" />
+				
+		<h:panelGrid columns="2" id="relatorioAdvogado">
+			<h:outputLabel value="Advogado:"/>
+				<h:selectOneMenu id="fknMatriculaAdvogado" value="#{usuarioBean.matricula}"
+					required="true">
+					<f:selectItem itemLabel="Selecione..." />
+					<f:selectItems value="#{usuarioBean.advogados}" />
+					<p:ajax listener="#{consultaBean.updateListaAdvogado(usuarioBean.matricula)}" update=":formPrincipal:listaAdvogado" />
+				</h:selectOneMenu>
+		</h:panelGrid>
+		</p:panel>
+		</h:form>
+		
+		<h:form id="formPrincipal">
+			<h:messages />
+			<p:panel>
+			<h:dataTable value="#{consultaBean.listaAdvogado}" var="listaAdvogado" id="listaAdvogado" rules="rows" cellpadding="7">			
+            	<h:column>
+					<f:facet name="header">&Aacute;rea Jur&iacute;dica</f:facet>
+					#{listaAdvogado.fknAreaJuridica.nome}
+				</h:column>
+				<h:column>
+					<f:facet name="header">Assunto</f:facet>
+					#{listaAdvogado.fknAssunto.descricao}
+				</h:column>		
+				<h:column>
+					<f:facet name="header">Cliente</f:facet>
+					#{listaAdvogado.fknMatriculaCliente.nome}
+				</h:column>		
+				<h:column>
+					<f:facet name="header">Pergunta</f:facet>
+					#{listaAdvogado.pergunta}
+				</h:column>	
+				<h:column>
+					<f:facet name="header">Resposta</f:facet>
+					#{listaAdvogado.resposta}
+				</h:column>
+				<h:column>
+					<f:facet name="header">Data Solicita&ccedil;&atilde;o</f:facet>
+					#{listaAdvogado.dataInicial}
+				</h:column>
+				<h:column>
+					<f:facet name="header">Data Atendimento</f:facet>
+					#{listaAdvogado.dataFinal}
+				</h:column>				
+			</h:dataTable>
+			</p:panel>
+		</h:form>
+	</f:view>		
+
+</body>
+</html>

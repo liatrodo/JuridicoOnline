@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+<h:head>
+	<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
+	<title>Jur&iacute;dico Online</title>
+</h:head>
+<h:body>
+    <ui:include src="MenuUsuario.xhtml" />
+	<h:form id="formPrincipal">
+		<p:panel header="Atendimento de Consultas Jur&iacute;dicas">
+			<h:messages />
+			<h:dataTable value="#{consultaBean.listaAtendidaPorCliente}" var="listaAtendidaPorCliente" id="listaAtendidaPorCliente" rules="rows" cellpadding="7">
+				<h:inputHidden value="listaAtendidaPorCliente.idConsulta" />
+				<h:column>
+					<f:facet name="header">&Aacute;rea Jur&iacute;dica</f:facet>
+					#{listaAtendidaPorCliente.fknAreaJuridica.nome}
+				</h:column>
+				<h:column>
+					<f:facet name="header">Assunto</f:facet>
+					#{listaAtendidaPorCliente.fknAssunto.descricao}
+				</h:column>		
+				<h:column>
+					<f:facet name="header">Cliente</f:facet>
+					#{listaAtendidaPorCliente.fknMatriculaCliente.nome}
+				</h:column>		
+				<h:column>
+					<f:facet name="header">Pergunta</f:facet>
+					#{listaAtendidaPorCliente.pergunta}
+				</h:column>		
+				<h:column>
+					<f:facet name="header">Resposta</f:facet>
+					#{listaAtendidaPorCliente.resposta}
+				</h:column>		
+				<h:column>
+					<f:facet name="header">Data Solicita&ccedil;&atilde;o</f:facet>
+					#{listaAtendidaPorCliente.dataInicial}
+				</h:column>
+				<h:column>
+					<f:facet name="header">Data Atendimento</f:facet>
+					#{listaAtendidaPorCliente.dataFinal}
+				</h:column>
+				<h:column>
+					<f:facet name="header">Pesquisa Satisfa&ccedil;&atilde;o</f:facet>
+					<p:commandLink title="Pesquisa" update=":formPesquisa:Pesquisa" oncomplete="dialogPesquisa.show()" 
+					immediate="true" ajax="true">
+		                  <p:graphicImage library="imagens" name="document.ico" width="32" height="32" style="border:0"/>
+		                  <f:setPropertyActionListener target="#{consultaBean.consulta}" value="#{listaAtendidaPorCliente}" />
+					</p:commandLink>
+				</h:column>	
+			</h:dataTable>
+		</p:panel>
+	</h:form>
+	<h:form id="formPesquisa">
+        <p:dialog header="Pesquisa" widgetVar="dialogPesquisa" modal="true" id="Pesquisa" var="Pesquisa" >
+                <p:panelGrid id="panelPesquisa" columns="2">
+                        <h:outputText value="&Iacute;ndice de Satisfa&ccedil;&atilde;o" />
+                        <h:selectOneMenu id="indiceSatisfacao" value="#{pesquisaSatisfacaoBean.pesquisa.indiceSatisfacao}"
+					required="true">
+							<f:selectItems value="#{nivelBean.niveis}" />
+						</h:selectOneMenu>  
+						
+						<h:outputText value="Rapidez Atendimento:" />
+                        <h:selectOneMenu id="rapidezAtendimento" value="#{pesquisaSatisfacaoBean.pesquisa.rapidezAtendimento}"
+					required="true">
+							<f:selectItems value="#{nivelBean.niveis}" />
+						</h:selectOneMenu>  
+                        
+                        <h:outputText value="Observa&ccedil;&atilde;o:" />
+                        <h:inputText value="#{pesquisaSatisfacaoBean.pesquisa.observacao}" />
+                        <h:outputText value="Id consulta:" />
+                        <h:inputText value="#{consultaBean.consulta.idConsulta}" />
+                </p:panelGrid>
+                <p:commandButton value="Salvar"
+                        action="#{pesquisaSatisfacaoBean.salvar(consultaBean.consulta)}"
+                        update=":formPrincipal:listaAtendidaPorCliente"
+                        oncomplete="dialogPesquisa.hide()" />
+        </p:dialog>
+    </h:form>	
+</h:body>
+</html>

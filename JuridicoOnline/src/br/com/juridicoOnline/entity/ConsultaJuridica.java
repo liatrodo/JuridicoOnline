@@ -24,7 +24,7 @@ public class ConsultaJuridica implements Serializable{
 	@Id
 	@GeneratedValue
 	@Column(name="idConsulta", unique = true, nullable = false)
-	private Integer idConsulta;
+	public Integer idConsulta;
 	
 	@ManyToOne
 	@JoinColumn(name="fknUnidadeJuridica")		
