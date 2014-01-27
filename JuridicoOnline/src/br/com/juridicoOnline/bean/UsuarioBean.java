@@ -30,6 +30,7 @@ public class UsuarioBean implements Serializable {
 	private String matricula;
 	private String nome;
 	private String senha;
+	private String email;
 	private UsuarioDAO usuarioDAO;
 	private Integer funcao;
 	private Integer fknUnidadeBase;
@@ -76,6 +77,7 @@ public class UsuarioBean implements Serializable {
 		httpSession.setAttribute("matricula", result.getMatricula());
 		httpSession.setAttribute("nome", result.getNome());
 		httpSession.setAttribute("fknUnidadeBase", result.getfknUnidadeBase());
+		httpSession.setAttribute("email", result.getEmail());
 		
 		funcao = result.getFuncao();
 		System.out.println("funcao:" + funcao);
@@ -158,5 +160,13 @@ public class UsuarioBean implements Serializable {
 			itens.add(new SelectItem(u.getMatricula(), u.getNome()));
 		}
 		return itens;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
 	}
 }

@@ -1,6 +1,7 @@
 package br.com.juridicoOnline.dao;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.hibernate.Query;
@@ -193,4 +194,44 @@ public class ConsultaJuridicaDAO extends HibernateUtil{
 		return listaAdvogado;
 	}
 	
+	
+	public List<ConsultaJuridica> listaArea(Integer area) {
+		List<ConsultaJuridica> listaArea = new ArrayList<ConsultaJuridica>();
+		try {
+			session = HibernateUtil.getSessionFactory().getCurrentSession();
+			transacao = session.beginTransaction();
+			listaArea = (List<ConsultaJuridica>) session.createCriteria(ConsultaJuridica.class)
+					.add(Restrictions.eq("fknAreaJuridica.idArea", area)).list();
+			transacao.commit();			
+		} catch (Exception e) {
+			session.getTransaction().rollback();
+			e.printStackTrace();
+		} finally {
+			if (session.isOpen()) {
+				session.close();		
+			}
+		}
+		return listaArea;
+	}	
+	
+	public List<ConsultaJuridica> listaPeriodo(Date dataInicial,Date dataFinal) {
+		System.out.println("estou no consultajuridicadao - listaperiodo" + dataInicial );
+		List<ConsultaJuridica> listaPeriodo = new ArrayList<ConsultaJuridica>();
+		try {
+			session = HibernateUtil.getSessionFactory().getCurrentSession();
+			transacao = session.beginTransaction();
+			listaPeriodo = (List<ConsultaJuridica>) session.createCriteria(ConsultaJuridica.class)
+					.add(Restrictions.ge("dataInicial", dataInicial))
+					.add(Restrictions.le("dataFinal", dataFinal)).list();
+			transacao.commit();			
+		} catch (Exception e) {
+			session.getTransaction().rollback();
+			e.printStackTrace();
+		} finally {
+			if (session.isOpen()) {
+				session.close();		
+			}
+		}
+		return listaPeriodo;
+	}	
 }

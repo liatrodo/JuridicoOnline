@@ -43,8 +43,8 @@ public class ConsultaJuridica implements Serializable{
 	private Complexidade fknComplexidade;
 	
 	@ManyToOne
-	@JoinColumn(name="fknMatriculaCliente")	
-	private Usuario fknMatriculaCliente;
+	@JoinColumn(name="fknMatriculaCliente")
+	public Usuario fknMatriculaCliente;
 	
 	@Column(name="pergunta", length = 200)		
 	private String pergunta;

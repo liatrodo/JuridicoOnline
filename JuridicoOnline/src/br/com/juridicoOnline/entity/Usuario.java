@@ -20,6 +20,7 @@ public class Usuario implements java.io.Serializable {
 	private String senha;
 	private Integer funcao;
 	private Integer fknUnidadeBase;
+	private String email;
 
 	public Usuario() {
 	}		
@@ -81,6 +82,17 @@ public class Usuario implements java.io.Serializable {
 		} else {
 			return false;
 		}
-	}	
+	}
+
+	@Column(name="email", length = 200)
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	
 	
 }

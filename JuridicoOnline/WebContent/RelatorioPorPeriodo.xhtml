@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+<h:head>
+	<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
+	<title>Jur&iacute;dico Online</title>
+</h:head>
+
+<body>
+
+	<ui:include src="MenuAdvogadoResponsavel.xhtml" />
+	
+	<f:view>
+		<h:form id="formData">
+		
+		<p:panel header="Relat&oacute;rio de acompanhamento das Consultas Jur&iacute;dicas - Por Per&iacute;odo">
+
+		<p:messages id="messages" autoUpdate="true" />
+
+		<h:panelGrid columns="2" id="relatorioPeriodo">
+			<h:outputLabel value="Data Inicial:"/>
+    			<p:calendar value="#{calendarioBean.dataInicial}" id="dataInicial" /> 
+			<h:outputLabel value="Data Final:"/>
+    			<p:calendar value="#{calendarioBean.dataFinal}" id="dataFinal" />     			
+				
+			<h:commandButton value="Consultar">
+	    		 <f:ajax listener="#{consultaBean.updateListaPeriodo(calendarioBean.dataInicial,calendarioBean.dataFinal)}" update=":formPrincipal:listaPeriodo" />
+    		</h:commandButton>		
+			
+		</h:panelGrid>
+		</p:panel>
+		</h:form>
+		
+		<h:form id="formPrincipal">
+			<h:messages />
+			<p:panel>
+			<h:dataTable value="#{consultaBean.listaPeriodo}" var="listaPeriodo" id="listaPeriodo" rules="rows" cellpadding="7">			
+            	<h:column>
+					<f:facet name="header">&Aacute;rea Jur&iacute;dica</f:facet>
+					#{listaPeriodo.fknAreaJuridica.nome}
+				</h:column>
+				<h:column>
+					<f:facet name="header">Assunto</f:facet>
+					#{listaPeriodo.fknAssunto.descricao}
+				</h:column>		
+				<h:column>
+					<f:facet name="header">Cliente</f:facet>
+					#{listaPeriodo.fknMatriculaCliente.nome}
+				</h:column>		
+				<h:column>
+					<f:facet name="header">Pergunta</f:facet>
+					#{listaPeriodo.pergunta}
+				</h:column>	
+				<h:column>
+					<f:facet name="header">Resposta</f:facet>
+					#{listaPeriodo.resposta}
+				</h:column>
+				<h:column>
+					<f:facet name="header">Data Solicita&ccedil;&atilde;o</f:facet>
+					#{listaPeriodo.dataInicial}
+				</h:column>
+				<h:column>
+					<f:facet name="header">Data Atendimento</f:facet>
+					#{listaPeriodo.dataFinal}
+				</h:column>				
+			</h:dataTable>
+			</p:panel>
+		</h:form>
+	</f:view>		
+
+</body>
+</html>

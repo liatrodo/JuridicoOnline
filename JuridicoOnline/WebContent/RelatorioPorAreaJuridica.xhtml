@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+<h:head>
+	<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
+	<title>Jur&iacute;dico Online</title>
+</h:head>
+
+<body>
+
+	<ui:include src="MenuAdvogadoResponsavel.xhtml" />
+	
+	<f:view>
+		<h:form id="formCombo">
+		
+		<p:panel header="Relat&oacute;rio de acompanhamento das Consultas Jur&iacute;dicas - Por &Aacute;rea Jur&iacute;dica">
+
+		<p:messages id="messages" autoUpdate="true" />
+				
+		<h:panelGrid columns="2" id="relatorioAreaJuridica">
+			<h:outputLabel value="&Aacute;rea:"/>
+				<h:selectOneMenu id="fknAreaJuridica" value="#{areaJuridicaBean.idArea}"
+					required="true">
+					<f:selectItem itemLabel="Selecione..." />
+					<f:selectItems value="#{areaJuridicaBean.areasJuridicas}" />
+					<p:ajax listener="#{consultaBean.updateListaArea(areaJuridicaBean.idArea)}" update=":formPrincipal:listaArea" />
+				</h:selectOneMenu>
+		</h:panelGrid>
+		</p:panel>
+		</h:form>
+		
+		<h:form id="formPrincipal">
+			<h:messages />
+			<p:panel>
+			<h:dataTable value="#{consultaBean.listaArea}" var="listaArea" id="listaArea" rules="rows" cellpadding="7">			
+            	<h:column>
+					<f:facet name="header">&Aacute;rea Jur&iacute;dica</f:facet>
+					#{listaArea.fknAreaJuridica.nome}
+				</h:column>
+				<h:column>
+					<f:facet name="header">Assunto</f:facet>
+					#{listaArea.fknAssunto.descricao}
+				</h:column>		
+				<h:column>
+					<f:facet name="header">Cliente</f:facet>
+					#{listaArea.fknMatriculaCliente.nome}
+				</h:column>		
+				<h:column>
+					<f:facet name="header">Pergunta</f:facet>
+					#{listaArea.pergunta}
+				</h:column>	
+				<h:column>
+					<f:facet name="header">Resposta</f:facet>
+					#{listaArea.resposta}
+				</h:column>
+				<h:column>
+					<f:facet name="header">Data Solicita&ccedil;&atilde;o</f:facet>
+					#{listaArea.dataInicial}
+				</h:column>
+				<h:column>
+					<f:facet name="header">Data Atendimento</f:facet>
+					#{listaArea.dataFinal}
+				</h:column>				
+			</h:dataTable>
+			</p:panel>
+		</h:form>
+	</f:view>		
+
+</body>
+</html>

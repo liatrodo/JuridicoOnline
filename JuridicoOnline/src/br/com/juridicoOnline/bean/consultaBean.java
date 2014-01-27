@@ -3,14 +3,18 @@ package br.com.juridicoOnline.bean;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.mail.EmailException;
+
 import br.com.juridicoOnline.dao.ConsultaJuridicaDAO;
 import br.com.juridicoOnline.entity.ConsultaJuridica;
+import br.com.juridicoOnline.util.Email;
 
 @ManagedBean(name = "consultaBean")
 @ViewScoped
@@ -22,6 +26,8 @@ public class consultaBean implements Serializable {
 	private List<ConsultaJuridica> lista;
 	private List<ConsultaJuridica> listaPorAdvogado;
 	private List<ConsultaJuridica> listaAdvogado;	
+	private List<ConsultaJuridica> listaArea;
+	private List<ConsultaJuridica> listaPeriodo;	
 	private List<ConsultaJuridica> listaPendentePorCliente;
 	private List<ConsultaJuridica> listaAtendidaPorCliente;
 	private String status;
@@ -35,7 +41,9 @@ public class consultaBean implements Serializable {
 	public consultaBean() {
 		String statusDistribuicao = "NOVA";
 		lista = consultaDAO.listaParcial(statusDistribuicao,advogadoBase);
-		setListaPorAdvogado(consultaDAO.listaPorAdvogado(usuario,statusConsultaAdvogado));		
+		setListaPorAdvogado(consultaDAO.listaPorAdvogado(usuario,statusConsultaAdvogado));
+		Integer AreaInicial = 0;
+		setListaArea(consultaDAO.listaArea(AreaInicial));
 		setListaAdvogado(consultaDAO.listaAdvogado(usuario));		
 		setListaPendentePorCliente(consultaDAO.listaPendentePorCliente(usuario,statusCliente));
 		setListaAtendidaPorCliente(consultaDAO.listaAtendidaPorCliente(usuario,statusCliente));
@@ -68,7 +76,7 @@ public class consultaBean implements Serializable {
 		consulta = new ConsultaJuridica();
 	}
 	
-	public void atender(){
+	public void atender() throws EmailException{
 		System.out.println("estou no atender");
 		Date dataAtual = new Date();
 		consulta.setDataFinal(dataAtual);	
@@ -77,7 +85,15 @@ public class consultaBean implements Serializable {
 		new ConsultaJuridicaDAO().alterar(consulta);
 		status = "DISTRIBUIDA";
 		setListaPorAdvogado(consultaDAO.listaPorAdvogado(usuario,status));	
+		String emailDestino = consulta.fknMatriculaCliente.getEmail();
 		consulta = new ConsultaJuridica();
+		Email email = new Email();
+		String destinatario = emailDestino;
+		String nomeDestinatario = "liatrodo";
+		String origem = "liatrodo@gmail.com";
+		String assunto = "Atendimento Consulta Online";
+		String conteudoMensagem = "Informamos que sua consulta juridica foi atendida. Favor consultar CONSULTA ONLINE!";
+		email.sendEmail(destinatario,nomeDestinatario,origem,assunto,conteudoMensagem);
 	}	
 	
 	public String excluir() {
@@ -140,5 +156,42 @@ public class consultaBean implements Serializable {
 		System.out.println("estou no updatelistaadvogado" + usuario);
 		setListaAdvogado(consultaDAO.listaAdvogado(usuario));;
 	}	
+	
+	public List<ConsultaJuridica> getListaArea() {
+		if (this.listaArea == null) {
+			ConsultaJuridicaDAO consultaDAO = new ConsultaJuridicaDAO();
+			this.listaArea = consultaDAO.listar();
+		}
+		return listaArea;
+	}
+
+	public void setListaArea(List<ConsultaJuridica> listaArea) {
+		this.listaArea = listaArea;
+	}
+	
+
+	public void updateListaArea(Integer area) {
+		System.out.println("estou no updatelistaarea" + area);
+		setListaArea(consultaDAO.listaArea(area));;
+	}	
+	
+	public List<ConsultaJuridica> getListaPeriodo() {
+		if (this.listaPeriodo == null) {
+			ConsultaJuridicaDAO consultaDAO = new ConsultaJuridicaDAO();
+			this.listaPeriodo = consultaDAO.listar();
+		}
+		return listaArea;
+	}
+	
+	public void setListaPeriodo(List<ConsultaJuridica> listaPeriodo) {
+		this.listaPeriodo = listaPeriodo;
+	}
+	
+
+	public void updateListaPeriodo(Date dataInicial,Date dataFinal) throws EmailException {
+		Date testeData = new Date(dataInicial.getTime() + TimeUnit.DAYS.toMillis(1));
+		System.out.println("estou no updatelistaperiodo" + dataInicial + dataFinal + testeData);
+		setListaPeriodo(consultaDAO.listaPeriodo(testeData,testeData));;
+	}		
 	
 }
