@@ -86,13 +86,14 @@ public class consultaBean implements Serializable {
 		status = "DISTRIBUIDA";
 		setListaPorAdvogado(consultaDAO.listaPorAdvogado(usuario,status));	
 		String emailDestino = consulta.fknMatriculaCliente.getEmail();
+		String nomeDestino = consulta.fknMatriculaCliente.getNome();
 		consulta = new ConsultaJuridica();
 		Email email = new Email();
 		String destinatario = emailDestino;
-		String nomeDestinatario = "liatrodo";
+		String nomeDestinatario = nomeDestino;
 		String origem = "liatrodo@gmail.com";
 		String assunto = "Atendimento Consulta Online";
-		String conteudoMensagem = "Informamos que sua consulta juridica foi atendida. Favor consultar CONSULTA ONLINE!";
+		String conteudoMensagem = "Informamos que sua consulta juridica foi atendida. Favor verificar sua resposta no site da CONSULTA ONLINE!";
 		email.sendEmail(destinatario,nomeDestinatario,origem,assunto,conteudoMensagem);
 	}	
 	
