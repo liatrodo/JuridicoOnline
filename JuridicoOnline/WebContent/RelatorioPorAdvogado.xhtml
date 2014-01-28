@@ -36,37 +36,55 @@
 		<h:form id="formPrincipal">
 			<h:messages />
 			<p:panel>
-			<h:dataTable value="#{consultaBean.listaAdvogado}" var="listaAdvogado" id="listaAdvogado" rules="rows" cellpadding="7">			
-            	<h:column>
+			<p:dataTable value="#{consultaBean.listaAdvogado}" var="listaAdvogado" id="listaAdvogado" rules="rows" cellpadding="7">			
+            	<p:column>
 					<f:facet name="header">&Aacute;rea Jur&iacute;dica</f:facet>
-					#{listaAdvogado.fknAreaJuridica.nome}
-				</h:column>
-				<h:column>
+					<h:outputText value="#{listaAdvogado.fknAreaJuridica.nome}" />
+				</p:column>
+				<p:column>
 					<f:facet name="header">Assunto</f:facet>
-					#{listaAdvogado.fknAssunto.descricao}
-				</h:column>		
-				<h:column>
+					<h:outputText value="#{listaAdvogado.fknAssunto.descricao}" />
+				</p:column>		
+				<p:column>
 					<f:facet name="header">Cliente</f:facet>
-					#{listaAdvogado.fknMatriculaCliente.nome}
-				</h:column>		
-				<h:column>
+					<h:outputText value="#{listaAdvogado.fknMatriculaCliente.nome}" />
+				</p:column>		
+				<p:column>
 					<f:facet name="header">Pergunta</f:facet>
-					#{listaAdvogado.pergunta}
-				</h:column>	
-				<h:column>
+					<h:outputText value="#{listaAdvogado.pergunta}" />					
+				</p:column>	
+				<p:column>
 					<f:facet name="header">Resposta</f:facet>
-					#{listaAdvogado.resposta}
-				</h:column>
-				<h:column>
+					<h:outputText value="#{listaAdvogado.resposta}" />					
+				</p:column>
+				<p:column>
 					<f:facet name="header">Data Solicita&ccedil;&atilde;o</f:facet>
-					#{listaAdvogado.dataInicial}
-				</h:column>
-				<h:column>
+					<h:outputText value="#{listaAdvogado.dataInicial}" />					
+				</p:column>
+				<p:column>
 					<f:facet name="header">Data Atendimento</f:facet>
-					#{listaAdvogado.dataFinal}
-				</h:column>				
-			</h:dataTable>
+					<h:outputText value="#{listaAdvogado.dataFinal}" />					
+				</p:column>				
+			</p:dataTable>
 			</p:panel>
+
+			<p:panel header="Exportar Dados">  
+		        <h:commandLink>  
+		            <p:graphicImage library="imagens" name="excel.png" width="32" height="32" style="border:0" />  
+		            <p:dataExporter type="xls" target="listaAdvogado" fileName="consultaJuridicaPorAdvogado" />  
+		        </h:commandLink>  
+		  
+		        <h:commandLink>  
+		            <p:graphicImage library="imagens" name="pdf.png" width="32" height="32" style="border:0" />
+		            <p:dataExporter type="pdf" target="listaAdvogado" fileName="consultaJuridicaPorAdvogado"/>  
+		        </h:commandLink>  
+		          
+		        <h:commandLink>  
+		            <p:graphicImage library="imagens" name="xml.png" width="32" height="32" style="border:0" />  
+		            <p:dataExporter type="xml" target="listaAdvogado" fileName="consultaJuridicaPorAdvogado" />  
+		        </h:commandLink>  
+		    </p:panel>  
+			
 		</h:form>
 	</f:view>		
 
